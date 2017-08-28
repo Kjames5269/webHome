@@ -1,0 +1,81 @@
+body {
+  background-color: black;
+}
+
+.center {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 20%; bottom: 0; right: 0;
+}
+
+div * {
+  font-size: 18px;
+}
+
+img {
+  float: right;
+}
+
+.search {
+  width: 100% !important;
+  margin-bottom: 10px;
+  height: 30px;
+}
+
+#searchbar {
+  padding-left: 10px;
+  border-bottom: 2px #F5F5F5 ;
+  background-color: black;
+  color: #F5F5F5;
+  border-right: none;
+}
+
+#searchbar:focus {
+  outline: none;
+}
+
+table * {
+  width: 84px;
+}
+
+#mail {
+  color: orange;
+  font-size: 20px;
+}
+
+.divider {
+  padding-bottom: 3px;
+  padding-top: 3px;
+  width: 0px;
+}
+
+#row1 * {
+  color: #F5F5F5;
+}
+
+#row2 * {
+  color: #D0D0D0;
+}
+
+#row3 * {
+  color: #A9A9A9;
+}
+
+#row4 * {
+  color: 	#808080
+}
+
+#row5 * {
+  color: #404040;
+}
+
+a {
+  -webkit-transition: color .5s, font-size .5s;
+  transition: color .5s, font-size .5s;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ff7344 !important;
+  font-size: 19px !important;
+}
