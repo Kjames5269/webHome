@@ -25,7 +25,7 @@ img {
 #searchbar {
   padding-left: 10px;
   border-bottom: 2px #F5F5F5 ;
-  background-color: black;
+  background-color: transparent;
   color: #F5F5F5;
   border-right: none;
 }
@@ -78,4 +78,8 @@ a {
 a:hover {
   color: #ff7344 !important;
   font-size: 19px !important;
+}
+
+a:focus {
+	outline-color: #ff7344 !important;
 }
