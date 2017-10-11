@@ -8,6 +8,11 @@
 
   <body>
     <div id=container>
+      <div id='mangaContainer'>
+        <form id='mangaList' action="./readManga.html" method="get">
+
+        </form>
+      </div>
       <img src='flcl.jpg' alt='pic' />
       <table class='center'>
         <tr id='row0'>
@@ -15,7 +20,7 @@
           <td colspan='6'>
             <form class='search' action='https://www.google.com/search'>
               <input class='search' id='searchbar' type='text' name='q'
-              value='' placeholder='Google Search' autocomplete='off' 
+              value='' placeholder='Google Search' autocomplete='off'
 			  autofocus />
             </form>
           </td>
@@ -65,6 +70,75 @@
 		  <th><a href='https://www.hulu.com/'>Ads</a></th>
         </tr>
       </table>
+      <div id='thanksMangaEden'>
+         <p>
+           Special thanks to <a href='http://www.mangaeden.com'>http://www.mangaeden.com</a>
+           for api's!
+        </p>
+      </div>
     </div>
+
+    <script>
+    //  I NEED A SERVER desperatly
+    const mangaArr = [
+        { name:'Made in Abyss', id:'570076f4719a168120d7ea0a', ch:43 },
+		{ name:'Shingeki no Kyojin', id:'4e70ea6ac092255ef7006a52', ch:99 }
+      ];
+
+	function namePrep(name) {
+		name = name.toLowerCase();
+		name = name.replace(/ /g, '-');
+		return name;
+	}
+	  
+	function getId(name) {
+		name = namePrep(name);
+		console.log(name);
+		
+		var request = new XMLHttpRequest();
+		request.open('GET', 'http://www.mangaeden.com/api/list/0/', true);
+		request.onreadystatechange = function(){
+			if (request.readyState === 4 && request.status === 200 ){
+				var response = JSON.parse(request.response)
+				var manga = response.manga.filter(function(e) {
+					return e.a == name;
+				});
+				console.log(manga[0].i);
+			}
+		};
+		request.send();
+	}
+
+	function checkIfOut(docId, manga) {
+		var request = new XMLHttpRequest();
+		request.open('GET', 'http://www.mangaeden.com/api/manga/' + manga.id, true);
+		request.onreadystatechange = function(){
+		if (request.readyState === 4 && request.status === 200){
+			var response = JSON.parse(request.response)
+			var latestChapter = response.chapters[0][0];
+			var charr = response.chapters[0];
+			var chName=charr[2].split(/[^A-Za-z ]/)[0];
+				if (latestChapter == manga.ch ) {
+					//  0 chapter, 1 nonsense, 2 name, 3 id
+					console.log(response.chapters[0]);
+					docId.innerHTML += "<button type=\"submit\" value=\"" + charr[3] +
+					"\" name=\""+ namePrep("Chapter " +charr[0] + " " + chName) + "\">" +
+					manga.name +"</button>";
+				}
+			}
+		};
+		request.send();
+	}
+
+	function getMangas() {
+		var doc = document.getElementById("mangaList");
+		mangaArr.forEach(function(e) {
+			checkIfOut(doc,e);
+		});
+	}
+	
+	getMangas();
+	
+    </script>
   </body>
 </html>

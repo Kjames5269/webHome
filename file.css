@@ -2,6 +2,56 @@ body {
   background-color: black;
 }
 
+#mangaContainer {
+  float: left;
+  overflow: auto;
+  margin:auto;
+  width: 50%;
+}
+
+#mangaContainer button {
+	color: white;
+	background-color: black;
+	border: none;
+}
+
+#mangaContainer button {
+  -webkit-transition: color .5s;
+  transition: color .5s, font-size .5s;
+  text-decoration: none;
+}
+
+#mangaContainer button:hover {
+  color: #ff7344 !important;
+}
+
+#mangaContainer button:focus {
+	outline-color: #ff7344 !important;
+}
+
+
+#mangaList {
+	border-left: solid #ff7344 2px;
+}
+
+#thanksMangaEden {
+    width: 640px;
+    position: fixed;
+    bottom: 0%;
+    margin:auto;
+    left:22%;
+    color: #404040;
+}
+
+#thanksMangaEden p a {
+  color: #808080;
+}
+
+#thanksMangaEden p a:hover {
+  color: #A9A9A9 !important;
+  font-size: 18px !important;
+}
+
 .center {
   margin: auto;
   position: absolute;
@@ -12,7 +62,7 @@ div * {
   font-size: 18px;
 }
 
-img {
+#container img {
   float: right;
 }
 
@@ -62,7 +112,7 @@ table * {
 }
 
 #row4 * {
-  color: 	#808080
+  color: 	#808080;
 }
 
 #row5 * {
@@ -82,4 +132,17 @@ a:hover {
 
 a:focus {
 	outline-color: #ff7344 !important;
+}
+
+#mangaReader img {
+	margin: auto;
+	margin-bottom: 1em;
+	display: block;
+
+}
+
+#mangaReader h1 {
+	color: white;
+	text-align: center;
+	text-transform: capitalize;
 }
