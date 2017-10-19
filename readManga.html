@@ -4,16 +4,43 @@
 		<title>Manga Page</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link rel='stylesheet' href='file.css' />
-		
+
 	</head>
 
 	<body>
 		<div id="mangaReader">
+			<h1 id="Title"></h1>
 		</div>
+		<form id="nextChapter" action="./readManga.html" method="get">;
+		</form>
 	</body>
-	
+
 	<script>
-	
+
+		function getChapter(doc, usr, mName) {
+			var request = new XMLHttpRequest();
+			request.open('GET', 'https://aneatotestsite.appspot.com/getChapter/' + usr +'/' + mName, true);
+			request.onreadystatechange = function() {
+			if (request.readyState === 4 && request.status === 200){
+				console.log(request);
+
+					var manga = JSON.parse(request.response);
+					if(typeof(manga) != String) {
+						var title = document.getElementById("Title");
+						title.innerHTML = manga.name.replace(/-/g, ' ') + " -- Chapter " + manga.ch + " : " + manga.chName;
+						doc.innerHTML += "<button class=\"footer\" type=\"submit\" value=\"" + usr + "_"
+						+ manga.name + "\" name=\"query\">Next chapter of " + manga.name.replace(/-/g, ' ') +"</button>";
+
+						populateChapter(document.getElementById("mangaReader"), manga.chId);
+					}
+					else {
+						doc.innerHTML += "No next chapter";
+					}
+				}
+			};
+			request.send();
+		}
+
 		function populateChapter(doc, id) {
 			var request = new XMLHttpRequest();
 			request.open('GET', 'http://www.mangaeden.com/api/chapter/' + id, true);
@@ -21,17 +48,15 @@
 			if (request.readyState === 4 && request.status === 200){
 				var response = JSON.parse(request.response);
 				var images = response.images.reverse();
+				console.log(response);
 				images.forEach(function (e) {
 					doc.innerHTML += "<img src=\"https://cdn.mangaeden.com/mangasimg/" + e[1] + "\" alt=\"chapter_" + e[0] + "\"/>";
 				});
-
-				console.log(response);
-					
 				}
 			};
 			request.send();
 		}
-	
+
 		var chapterID=-1;
 		var url = location.href;
 		if(!url.includes('?')) {
@@ -39,22 +64,18 @@
 		}
 		else {
 		//  Horribly bad but w.e.
-			
+
 			var vars = url.substring(url.indexOf("?")+1);
 			var arr = vars.split("=");
-			
-			chapterID = arr[1];
-			var name = arr[0];
-						
-			var doc = document.getElementById("mangaReader");
-			doc.innerHTML = "<h1>" + name.replace(/-/g, ' ') + "</h1>";
-			
-			console.log(chapterID);
-			populateChapter(doc, chapterID); 
+
+		//  I can't even begin to comprehend how bad this is
+			var spagetti = arr[1].split("_");
+			var user = spagetti[0];
+			var mangaName = spagetti[1];
+
+			getChapter(document.getElementById("nextChapter"), user, mangaName);
 		}
-		
-		
-		
+
 	</script>
-	
+
 </html>

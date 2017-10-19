@@ -7,10 +7,47 @@
    </head>
 
   <body>
+
+    <script>
+
+    function collapse(display) {
+      var form = document.getElementById("hiddenForm")
+
+      for( var i = 0; i < form.children.length; i++) {
+        form.children[i].style.display = display;
+      }
+    }
+
+    var expand = false;
+
+    function toggleHidden() {
+      var cont = document.getElementById("container");
+
+      if(expand) {
+        expand = false;
+        collapse("none");
+      }
+      else {
+        expand = true;
+        collapse("block");
+      }
+    }
+
+    </script>
+
+
     <div id=container>
       <div id='mangaContainer'>
         <form id='mangaList' action="./readManga.html" method="get">
-
+           <button id="adder" onclick="toggleHidden()" type="button">Add</button>
+        </form>
+      </div>
+      <div id=hidden>
+        <form id="hiddenForm" action="https://aneatotestsite.appspot.com/"  method="post">
+          <input id="userId" type="hidden" name="usr" value=""/>
+          <input type="text" value="" autocomplete="off" placeholder="Manga name" name="name"/>
+          <input type="text" value="" autocomplete="off" placeholder="Chapter [first, current]" name="ch"/>
+          <input id="hiddenSubmitButton" type="submit" value="Add Manga"/>
         </form>
       </div>
       <img src='flcl.jpg' alt='pic' />
@@ -79,66 +116,27 @@
     </div>
 
     <script>
-    //  I NEED A SERVER desperatly
-    const mangaArr = [
-        { name:'Made in Abyss', id:'570076f4719a168120d7ea0a', ch:43 },
-		{ name:'Shingeki no Kyojin', id:'4e70ea6ac092255ef7006a52', ch:99 }
-      ];
 
-	function namePrep(name) {
-		name = name.toLowerCase();
-		name = name.replace(/ /g, '-');
-		return name;
-	}
-	  
-	function getId(name) {
-		name = namePrep(name);
-		console.log(name);
-		
-		var request = new XMLHttpRequest();
-		request.open('GET', 'http://www.mangaeden.com/api/list/0/', true);
-		request.onreadystatechange = function(){
-			if (request.readyState === 4 && request.status === 200 ){
-				var response = JSON.parse(request.response)
-				var manga = response.manga.filter(function(e) {
-					return e.a == name;
-				});
-				console.log(manga[0].i);
-			}
-		};
-		request.send();
-	}
+      var mangaDiv = document.getElementById('mangaList');
+      var user = "kjames";
 
-	function checkIfOut(docId, manga) {
-		var request = new XMLHttpRequest();
-		request.open('GET', 'http://www.mangaeden.com/api/manga/' + manga.id, true);
-		request.onreadystatechange = function(){
-		if (request.readyState === 4 && request.status === 200){
-			var response = JSON.parse(request.response)
-			var latestChapter = response.chapters[0][0];
-			var charr = response.chapters[0];
-			var chName=charr[2].split(/[^A-Za-z ]/)[0];
-				if (latestChapter == manga.ch ) {
-					//  0 chapter, 1 nonsense, 2 name, 3 id
-					console.log(response.chapters[0]);
-					docId.innerHTML += "<button type=\"submit\" value=\"" + charr[3] +
-					"\" name=\""+ namePrep("Chapter " +charr[0] + " " + chName) + "\">" +
-					manga.name +"</button>";
-				}
-			}
-		};
-		request.send();
-	}
+      var request = new XMLHttpRequest();
+      request.open('GET', 'https://aneatotestsite.appspot.com/' + user, true);
+      request.onreadystatechange = function(){
+        if (request.readyState === 4 && request.status === 200 ){
+          var response = JSON.parse(request.response)
+          var manga = response.forEach(function(e) {
+            mangaDiv.innerHTML += "<button type=\"submit\" value=\"" + user + "_"
+            + e.name + "\" name=\"query\">" + e.name.replace(/-/g, ' ') +"</button>";
+          });
+        }
+      };
+      request.send();
 
-	function getMangas() {
-		var doc = document.getElementById("mangaList");
-		mangaArr.forEach(function(e) {
-			checkIfOut(doc,e);
-		});
-	}
-	
-	getMangas();
-	
+      var usr = document.getElementById('userId');
+      usr.value = user;
+
     </script>
+
   </body>
 </html>
