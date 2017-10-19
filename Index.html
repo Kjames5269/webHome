@@ -7,7 +7,49 @@
    </head>
 
   <body>
+
+    <script>
+
+    function collapse(display) {
+      var form = document.getElementById("hiddenForm")
+
+      for( var i = 0; i < form.children.length; i++) {
+        form.children[i].style.display = display;
+      }
+    }
+
+    var expand = false;
+
+    function toggleHidden() {
+      var cont = document.getElementById("container");
+
+      if(expand) {
+        expand = false;
+        collapse("none");
+      }
+      else {
+        expand = true;
+        collapse("block");
+      }
+    }
+
+    </script>
+
+
     <div id=container>
+      <div id='mangaContainer'>
+        <form id='mangaList' action="./readManga.html" method="get">
+           <button id="adder" onclick="toggleHidden()" type="button">Add</button>
+        </form>
+      </div>
+      <div id=hidden>
+        <form id="hiddenForm" action="https://aneatotestsite.appspot.com/"  method="post">
+          <input id="userId" type="hidden" name="usr" value=""/>
+          <input type="text" value="" autocomplete="off" placeholder="Manga name" name="name"/>
+          <input type="text" value="" autocomplete="off" placeholder="Chapter [first, current]" name="ch"/>
+          <input id="hiddenSubmitButton" type="submit" value="Add Manga"/>
+        </form>
+      </div>
       <img src='flcl.jpg' alt='pic' />
       <table class='center'>
         <tr id='row0'>
@@ -15,7 +57,7 @@
           <td colspan='6'>
             <form class='search' action='https://www.google.com/search'>
               <input class='search' id='searchbar' type='text' name='q'
-              value='' placeholder='Google Search' autocomplete='off' 
+              value='' placeholder='Google Search' autocomplete='off'
 			  autofocus />
             </form>
           </td>
@@ -65,6 +107,36 @@
 		  <th><a href='https://www.hulu.com/'>Ads</a></th>
         </tr>
       </table>
+      <div id='thanksMangaEden'>
+         <p>
+           Special thanks to <a href='http://www.mangaeden.com'>http://www.mangaeden.com</a>
+           for api's!
+        </p>
+      </div>
     </div>
+
+    <script>
+
+      var mangaDiv = document.getElementById('mangaList');
+      var user = "kjames";
+
+      var request = new XMLHttpRequest();
+      request.open('GET', 'https://aneatotestsite.appspot.com/' + user, true);
+      request.onreadystatechange = function(){
+        if (request.readyState === 4 && request.status === 200 ){
+          var response = JSON.parse(request.response)
+          var manga = response.forEach(function(e) {
+            mangaDiv.innerHTML += "<button type=\"submit\" value=\"" + user + "_"
+            + e.name + "\" name=\"query\">" + e.name.replace(/-/g, ' ') +"</button>";
+          });
+        }
+      };
+      request.send();
+
+      var usr = document.getElementById('userId');
+      usr.value = user;
+
+    </script>
+
   </body>
 </html>

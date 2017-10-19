@@ -2,6 +2,60 @@ body {
   background-color: black;
 }
 
+#mangaContainer {
+  float: left;
+  overflow: auto;
+  margin:auto;
+  width: 50%;
+}
+
+#mangaContainer button {
+	color: white;
+	background-color: black;
+	border: none;
+}
+
+#mangaContainer button {
+  -webkit-transition: color .5s;
+  transition: color .5s, font-size .5s;
+  text-decoration: none;
+}
+
+#mangaContainer button:hover {
+  color: #ff7344 !important;
+}
+
+#mangaContainer button:focus {
+	outline-color: #ff7344 !important;
+}
+
+
+#mangaList {
+	border-left: solid #ff7344 2px;
+}
+
+#mangaList button {
+  text-transform: capitalize;
+}
+
+#thanksMangaEden {
+    width: 640px;
+    position: fixed;
+    bottom: 0%;
+    margin:auto;
+    left:22%;
+    color: #404040;
+}
+
+#thanksMangaEden p a {
+  color: #808080;
+}
+
+#thanksMangaEden p a:hover {
+  color: #A9A9A9 !important;
+  font-size: 18px !important;
+}
+
 .center {
   margin: auto;
   position: absolute;
@@ -12,8 +66,39 @@ div * {
   font-size: 18px;
 }
 
-img {
+#container, #hiddenForm {
+  position: absolute;
+}
+
+#container {
+  top: 0px;
+  left: 0px;
+  right: 0;
+  bottom: 0px;
+}
+
+#hiddenForm {
+  top: 30px;
+  width: 200px;
+  bottom: 0px;
+}
+
+#container img {
   float: right;
+}
+
+#hiddenForm input {
+  display: none;
+  background-color: transparent;
+  color: #F5F5F5;
+  padding: 3px;
+  padding-left: 6px;
+  border: none;
+  border-left: solid #ff7344 2px;
+}
+
+#hiddenForm #hiddenSubmitButton {
+  color: #666666;
 }
 
 .search {
@@ -62,7 +147,7 @@ table * {
 }
 
 #row4 * {
-  color: 	#808080
+  color: 	#808080;
 }
 
 #row5 * {
@@ -82,4 +167,29 @@ a:hover {
 
 a:focus {
 	outline-color: #ff7344 !important;
+}
+
+#mangaReader img {
+	margin: auto;
+	margin-bottom: 1em;
+	display: block;
+}
+
+#mangaReader h1 {
+	color: white;
+	text-align: center;
+	text-transform: capitalize;
+}
+
+.footer {
+  width: 50%;
+  height: 3em;
+  display: block;
+  margin: auto;
+  background-color: black;
+  border: none;
+  border-top: solid #ff7344 2px;
+  border-bottom: solid #ff7344 2px;
+  color: white;
+  margin-bottom: 45em;
 }
