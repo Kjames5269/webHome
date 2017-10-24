@@ -175,7 +175,7 @@ a:focus {
 	display: block;
 }
 
-#mangaReader h1 {
+.mangaTitle {
 	color: white;
 	text-align: center;
 	text-transform: capitalize;

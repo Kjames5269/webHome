@@ -8,56 +8,96 @@
 	</head>
 
 	<body>
+		<h1 id="Title" class="mangaTitle"></h1>
 		<div id="mangaReader">
-			<h1 id="Title"></h1>
+
 		</div>
-		<form id="nextChapter" action="./readManga.html" method="get">;
-		</form>
+		<div id="nextChapter">;
+		</div>
 	</body>
 
 	<script>
 
-		function getChapter(doc, usr, mName) {
+		var chArr = new Array();
+		var user;
+		var mangaName;
+
+		function prepChapter(manga, chapters, first) {
 			var request = new XMLHttpRequest();
-			request.open('GET', 'https://aneatotestsite.appspot.com/getChapter/' + usr +'/' + mName, true);
-			request.onreadystatechange = function() {
-			if (request.readyState === 4 && request.status === 200){
-				console.log(request);
-
-					var manga = JSON.parse(request.response);
-					if(typeof(manga) != String) {
-						var title = document.getElementById("Title");
-						title.innerHTML = manga.name.replace(/-/g, ' ') + " -- Chapter " + manga.ch + " : " + manga.chName;
-						doc.innerHTML += "<button class=\"footer\" type=\"submit\" value=\"" + usr + "_"
-						+ manga.name + "\" name=\"query\">Next chapter of " + manga.name.replace(/-/g, ' ') +"</button>";
-
-						populateChapter(document.getElementById("mangaReader"), manga.chId);
-					}
-					else {
-						doc.innerHTML += "No next chapter";
-					}
-				}
-			};
-			request.send();
-		}
-
-		function populateChapter(doc, id) {
-			var request = new XMLHttpRequest();
-			request.open('GET', 'http://www.mangaeden.com/api/chapter/' + id, true);
+			request.open('GET', 'http://www.mangaeden.com/api/chapter/' + chapters.chId, true);
 			request.onreadystatechange = function(){
-			if (request.readyState === 4 && request.status === 200){
-				var response = JSON.parse(request.response);
-				var images = response.images.reverse();
-				console.log(response);
-				images.forEach(function (e) {
-					doc.innerHTML += "<img src=\"https://cdn.mangaeden.com/mangasimg/" + e[1] + "\" alt=\"chapter_" + e[0] + "\"/>";
-				});
+				if (request.readyState === 4 && request.status === 200){
+					var response = JSON.parse(request.response);
+					var images = response.images.reverse();
+					//console.log(response);
+					var imgs = [];
+					images.forEach(function (e) {
+						var a = new Image();
+						a.src = "https://cdn.mangaeden.com/mangasimg/" + e[1];
+						a.alt = e[2];
+						imgs.push(a);
+						//"<img src=\"https://cdn.mangaeden.com/mangasimg/" + e[1] + "\" alt=\"chapter_" + e[0] + "\"/>";
+					});
+
+					var str = manga.name.replace(/-/g, ' ') + " -- Chapter " + chapters.ch + " : " + chapters.chName;
+					var button = "<button class=\"footer\" onclick=\"getNext()\" value=\"" + user + "_"
+					+ manga.name + "\" name=\"query\">Next chapter of " + manga.name.replace(/-/g, ' ') +"</button>";
+
+					chArr.push( { name: manga.name, chapter: chapters.chName, title: str, button: button, imgs: imgs } );
+					if(first) {
+						populateChapter(manga.name);
+					}
 				}
 			};
 			request.send();
 		}
 
-		var chapterID=-1;
+		function prep(first) {
+			var request = new XMLHttpRequest();
+			request.open('GET', 'https://aneatotestsite.appspot.com/getChapter/' + user +'/' + mangaName, true);
+			request.onreadystatechange = function() {
+				if (request.readyState === 4 && request.status === 200){
+					var manga = JSON.parse(request.response);
+					console.log(manga);
+					if(first)
+						prepChapter(manga, manga.currCh, first);
+					prepChapter(manga, manga.nextCh);
+				}
+			}
+		request.send();
+		}
+
+		function getNext() {
+			prep(false);
+			populateChapter();
+		}
+
+		function populateChapter(chNum) {
+			var chapter;
+			if(chNum) {
+				chapter = (chArr[0].chapter == chNum) ? chArr.shift() : chArr.pop();
+			}
+			else {
+				var chapter = chArr.shift();
+			}
+			//console.log("populateChapter");
+			//console.log(chapter);
+			var doc = document.getElementById("mangaReader");
+			var title = document.getElementById("Title");
+			title.innerHTML = chapter.title;
+
+			doc.innerHTML = "";
+			chapter.imgs.forEach(function (e) {
+				doc.appendChild(e);
+			});
+			var next = document.getElementById("nextChapter");
+			next.innerHTML += chapter.button;
+			scroll(0,0);
+
+		}
+
+// -------------------- Functions End ------------------------------ //
+
 		var url = location.href;
 		if(!url.includes('?')) {
 			document.getElementById("mangaReader").innerHTML = "No Chapter found";
@@ -70,10 +110,10 @@
 
 		//  I can't even begin to comprehend how bad this is
 			var spagetti = arr[1].split("_");
-			var user = spagetti[0];
-			var mangaName = spagetti[1];
+			user = spagetti[0];
+			mangaName = spagetti[1];
 
-			getChapter(document.getElementById("nextChapter"), user, mangaName);
+			prep(true);
 		}
 
 	</script>
