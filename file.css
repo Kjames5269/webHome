@@ -175,6 +175,10 @@ a:focus {
 	display: block;
 }
 
+#mangaReader .largePage {
+	width: 100%;
+}
+
 .mangaTitle {
 	color: white;
 	text-align: center;
