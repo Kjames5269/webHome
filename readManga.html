@@ -34,7 +34,10 @@
 					images.forEach(function (e) {
 						var a = new Image();
 						a.src = "https://cdn.mangaeden.com/mangasimg/" + e[1];
-						a.alt = e[2];
+						a.alt = e[0];
+						if(e[2] > 1569) {
+							a.class="largePage";
+						}
 						imgs.push(a);
 						//"<img src=\"https://cdn.mangaeden.com/mangasimg/" + e[1] + "\" alt=\"chapter_" + e[0] + "\"/>";
 					});
