@@ -12,7 +12,7 @@
 		<div id="mangaReader">
 
 		</div>
-		<div id="nextChapter">;
+		<div id="nextChapter">
 		</div>
 	</body>
 
@@ -24,6 +24,11 @@
 
 		function prepChapter(manga, chapters, first) {
 			var request = new XMLHttpRequest();
+			
+			if(!chapters.chId) {
+				return;
+			}
+			
 			request.open('GET', 'http://www.mangaeden.com/api/chapter/' + chapters.chId, true);
 			request.onreadystatechange = function(){
 				if (request.readyState === 4 && request.status === 200){
@@ -36,7 +41,6 @@
 						a.src = "https://cdn.mangaeden.com/mangasimg/" + e[1];
 						a.alt = e[2];
 						imgs.push(a);
-						//"<img src=\"https://cdn.mangaeden.com/mangasimg/" + e[1] + "\" alt=\"chapter_" + e[0] + "\"/>";
 					});
 
 					var str = manga.name.replace(/-/g, ' ') + " -- Chapter " + chapters.ch + " : " + chapters.chName;
@@ -62,7 +66,9 @@
 					if(first)
 						prepChapter(manga, manga.currCh, first);
 					prepChapter(manga, manga.nextCh);
-				}
+				}// else if (request.readyState === 4 && request.status === 200) {
+					// document.getElementById("Title").innerHTML = request.response;
+				//}
 			}
 		request.send();
 		}
@@ -80,18 +86,22 @@
 			else {
 				var chapter = chArr.shift();
 			}
-			//console.log("populateChapter");
-			//console.log(chapter);
 			var doc = document.getElementById("mangaReader");
 			var title = document.getElementById("Title");
-			title.innerHTML = chapter.title;
-
+			
 			doc.innerHTML = "";
-			chapter.imgs.forEach(function (e) {
-				doc.appendChild(e);
-			});
-			var next = document.getElementById("nextChapter");
-			next.innerHTML += chapter.button;
+			title.innerHTML = "The next chapter is not out yet";
+			
+			if(chapter) {
+
+				title.innerHTML = chapter.title;
+	
+				chapter.imgs.forEach(function (e) {
+					doc.appendChild(e);
+				});
+				var next = document.getElementById("nextChapter");
+				next.innerHTML += chapter.button;
+			}
 			scroll(0,0);
 
 		}
