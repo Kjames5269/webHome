@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!DOCTYPE html>
+<html lang="en">
    <head>
       <title>Home Page</title>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -8,41 +8,15 @@
 
   <body>
 
-    <script>
+    <script src="./js/collapse.js"></script>
 
-    function collapse(display) {
-      var form = document.getElementById("hiddenForm")
-
-      for( var i = 0; i < form.children.length; i++) {
-        form.children[i].style.display = display;
-      }
-    }
-
-    var expand = false;
-
-    function toggleHidden() {
-      var cont = document.getElementById("container");
-
-      if(expand) {
-        expand = false;
-        collapse("none");
-      }
-      else {
-        expand = true;
-        collapse("block");
-      }
-    }
-
-    </script>
-
-
-    <div id=container>
+    <div id="container">
       <div id='mangaContainer'>
         <form id='mangaList' action="./readManga.html" method="get">
            <button id="adder" onclick="toggleHidden()" type="button">Add</button>
         </form>
       </div>
-      <div id=hidden>
+      <div id="hidden">
         <form id="hiddenForm" action="https://aneatotestsite.appspot.com/"  method="post">
           <input id="userId" type="hidden" name="usr" value=""/>
           <input type="text" value="" autocomplete="off" placeholder="Manga name" name="name"/>
@@ -115,29 +89,7 @@
       </div>
     </div>
 
-    <script>
-
-      var mangaDiv = document.getElementById('mangaList');
-      var user = "kjames";
-
-      var request = new XMLHttpRequest();
-      request.open('GET', 'https://aneatotestsite.appspot.com/' + user, true);
-      request.onreadystatechange = function(){
-        if (request.readyState === 4 && request.status === 200 ) {
-          var response = JSON.parse(request.response)
-          console.log(response);
-          var manga = response.forEach(function(e) {
-            mangaDiv.innerHTML += "<button type=\"submit\" value=\"" + user + "_"
-            + e.name + "\" name=\"query\">" + e.name.replace(/-/g, ' ') +"</button>";
-          });
-        }
-      };
-      request.send();
-
-      var usr = document.getElementById('userId');
-      usr.value = user;
-
-    </script>
+    <script src="./js/mangaList.js"></script>
 
   </body>
 </html>

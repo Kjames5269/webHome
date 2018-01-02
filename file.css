@@ -1,5 +1,12 @@
+html {
+  height: 100%;
+}
+
 body {
   background-color: black;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
 }
 
 #mangaContainer {
@@ -60,6 +67,9 @@ body {
   margin: auto;
   position: absolute;
   top: 0; left: 20%; bottom: 0; right: 0;
+  background-color: black;
+  border-radius: 15px;
+  padding: 20px;
 }
 
 div * {
@@ -75,6 +85,7 @@ div * {
   left: 0px;
   right: 0;
   bottom: 0px;
+  height: 100%;
 }
 
 #hiddenForm {
@@ -85,6 +96,8 @@ div * {
 
 #container img {
   float: right;
+  height: 100%;
+  width: auto;
 }
 
 #hiddenForm input {
@@ -102,7 +115,7 @@ div * {
 }
 
 .search {
-  width: 100% !important;
+  width: 100%;
   margin-bottom: 10px;
   height: 30px;
 }
@@ -113,6 +126,7 @@ div * {
   background-color: transparent;
   color: #F5F5F5;
   border-right: none;
+  width: calc(100% - 10px);
 }
 
 #searchbar:focus {
@@ -120,7 +134,7 @@ div * {
 }
 
 table * {
-  width: 84px;
+  min-width: 84px;
 }
 
 #mail {
@@ -131,7 +145,7 @@ table * {
 .divider {
   padding-bottom: 3px;
   padding-top: 3px;
-  width: 0px;
+  min-width: 0px;
 }
 
 #row1 * {
