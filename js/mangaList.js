@@ -3,7 +3,7 @@ var mangaDiv = document.getElementById('mangaList');
 var user = "kjames";
 
 var request = new XMLHttpRequest();
-request.open('GET', 'https://aneatotestsite.appspot.com/' + user, true);
+request.open('GET', 'https://neatmangareader.appspot.com/' + user, true);
 request.onreadystatechange = function(){
 	if (request.readyState === 4 && request.status === 200 ) {
 	  var response = JSON.parse(request.response)

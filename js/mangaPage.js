@@ -42,7 +42,7 @@ function prepChapter(manga, chapters, first) {
 
 function prep(first) {
 	var request = new XMLHttpRequest();
-	request.open('GET', 'https://aneatotestsite.appspot.com/getChapter/' + user +'/' + mangaName, true);
+	request.open('GET', 'https://neatmangareader.appspot.com/getChapter/' + user +'/' + mangaName, true);
 	request.onreadystatechange = function() {
 		if (request.readyState === 4 && request.status === 200){
 			var manga = JSON.parse(request.response);
