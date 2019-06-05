@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
+
 import BackgroundPic from '../resources/TheArcticCruise.png'
 import Clock from 'react-live-clock'
 import GithubLogo from '../resources/GitHub-Mark-120px-plus.png'
@@ -23,7 +24,7 @@ const Center = styled.div`
     /* bring your own prefixes */
 `
 
-const arr = [
+const logos = [
     { url: "https://www.github.com", img: GithubLogo, alt: "github" },
     { url: "https://www.reddit.com/r/Animemes/", img: AnimemesLogo, alt: "Animemes" }
 ]
@@ -32,10 +33,11 @@ ReactDOM.render(
         <Background>
             <Banner>
                 <Clock format={'h:mm'} ticking={true} timezone={'US/Arizona'}
-                       style={{color:"white", float: "right", marginTop: "15px", marginRight: "25px"}} />
+                       style={{color:"white", float: "right", marginTop: "15px", marginRight: "25px",
+                    }} />
 
                 {
-                    arr.map((obj, index) => 
+                    logos.map((obj, index) => 
                       <Icon href={obj.url} pic={obj.img} alt={obj.alt}/>
                     )
                 }
