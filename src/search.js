@@ -1,19 +1,24 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import Aliases from './aliases.js'
 
 class Search extends React.Component {
-    state = { input: "", search: "" };
+    state = { input: "", match: false };
 
     handleSubmit = (e) => {
-
-        if(Aliases[this.state.input]) {
-            window.location.href = Aliases[this.state.input]
+        if(this.state.match) {
+            window.location.href = this.state.match
             e.preventDefault();
             return false;
         }
-
         return true;
+    }
+
+    handleChange = (e) => {
+        this.setState({ 
+            input: e.target.value,
+            match: Aliases[e.target.value] 
+        })
     }
 
     render() {
@@ -22,8 +27,8 @@ class Search extends React.Component {
                 <Prompt>{this.props.prompt}</Prompt>
                 <Input id='searchbar' type='text'
                     value={this.state.input} name="q" autoComplete='off'
-                    onChange={ event => this.setState({ input: event.target.value })}
-                    autoFocus />
+                    onChange={ this.handleChange }
+                    autoFocus match={this.state.match} />
             </SearchBar>
         )
     }
@@ -63,6 +68,10 @@ const Input = styled.input`
     opacity: inherit;
     float:left;
     font-size: 18px;
+
+    ${props => props.match && css`
+        text-decoration: underline;
+    `}
 `
 
 export default Search;
