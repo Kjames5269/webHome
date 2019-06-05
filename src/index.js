@@ -38,7 +38,7 @@ ReactDOM.render(
 
                 {
                     logos.map((obj, index) => 
-                      <Icon href={obj.url} pic={obj.img} alt={obj.alt}/>
+                      <Icon href={obj.url} pic={obj.img} alt={obj.alt} key={index}/>
                     )
                 }
             </Banner>
