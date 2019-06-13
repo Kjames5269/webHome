@@ -40,7 +40,7 @@ module.exports = {
     devtool: "source-map",
     plugins: [    
         new HtmlWebpackPlugin({
-        title: "Wallboard!!!!",
+        title: "WebHome!",
         template: "./src/index.html",
       }),
       new webpack.HotModuleReplacementPlugin()

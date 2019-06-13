@@ -24,6 +24,18 @@ const Center = styled.div`
     /* bring your own prefixes */
 `
 
+const BottomText = styled.a`
+    position: absolute;
+    bottom: 0px;
+    margin: 0px;
+    padding: 3px 13px 3px 13px;
+    border-radius: 0px 5px 0px 0px;
+    font-size: 16px;
+    color: white;
+    background: rgba(20, 0, 55, 0.7);
+    text-decoration: none;
+`
+
 const logos = [
     { url: "https://www.github.com", img: GithubLogo, alt: "github" },
     { url: "https://www.reddit.com/r/Animemes/", img: AnimemesLogo, alt: "Animemes" }
@@ -45,6 +57,9 @@ ReactDOM.render(
             <Center>
                 <Search prompt=">"/>
             </Center>
+            <BottomText href="https://hatintime.com/">
+                A Hat in Time
+            </BottomText>
         </Background>
 
     , document.getElementById('iamroot'))

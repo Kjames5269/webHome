@@ -12,7 +12,11 @@ const Aliases = {
     "amazon": "https://www.amazon.com/",
     "reddit": "https://www.reddit.com/",
     "cr": "https://www.crunchyroll.com/",
-    "hs": "https://horriblesubs.info/"
+    "hs": "https://horriblesubs.info/",
+    "git": "https://github.com/",
+    "youtube": "https://www.youtube.com/",
+    "yt": "https://www.youtube.com/",
+    "twitch": "https://www.twitch.tv/directory/following",
 }
 
 export default Aliases
