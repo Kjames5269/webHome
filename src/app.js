@@ -24,22 +24,21 @@ const widthGrowthFunc = (screenSize, { maxSize = MAX_SCREEN_SIZE, diminishRate =
     return (screenSize <= maxSize) ? undefined : (screenSize - maxSize) * diminishRate;
 }
 
+//  Props: offset: { left, top }
 const Background = styled.div`
   width: 100%;
   height: 100%;
   background-image: url(${BackgroundPic});
-  ${props => props.leftOffset && css`
-    background-position: left ${props.leftOffset}px top 0px;
+  ${props => props.offset && css`
+    background-position: left ${props.offset.left}px top ${props.offset.top}px;
     `}
 `;
 
 const calculateBackgroundOffset = (screenSize) => {
     //  Inversely proportional to screen size.
     //  2048 × 1024 is the size of the background picture
-    //  1680 is the resolution of the computer.
-    //  I wonder if there's a better way to get this...
-    //  TODO
-    return -1 * (2048 / screenSize * 150) + (2048 / 1680 * 150);
+    return { left: 150 - (2048 / screenSize.width) * 150,
+              top: 150 - (1024 / screenSize.height) * 150 }
 }
 
 const goToHref = (href) => {
@@ -83,18 +82,19 @@ const logos = [
 
 const App = props => {
    
-    const [screenSize, setScreenSize] = useState(window.innerWidth)
+    const [screenSize, setScreenSize] = useState({width: window.innerWidth,
+    height: window.innerHeight})
     useEffect(() => {
-        const handleWindowResize = () => setScreenSize(window.innerWidth)
+        const handleWindowResize = () => setScreenSize({ width: window.innerWidth,
+          height: window.innerHeight })
         window.addEventListener('resize', handleWindowResize);
         return () => {
             window.removeEventListener('resize', handleWindowResize)
         }
     });
-
   return (
-  <Background leftOffset={calculateBackgroundOffset(screenSize)}>
-    <Banner url={water} color={[40, 20, 75]} rightPadding={widthGrowthFunc(screenSize,{diminishRate: 0.03})} >
+  <Background offset={calculateBackgroundOffset(screenSize)}>
+    <Banner url={water} color={[40, 20, 75]} rightPadding={widthGrowthFunc(screenSize.width,{diminishRate: 0.03})} >
       <Clock
         format={"h:mm"}
         ticking={true}
@@ -108,10 +108,10 @@ const App = props => {
       />
 
       {logos.map((obj, index) => (
-        <Icon {...obj} key={index} marginWidth={widthGrowthFunc(screenSize,{diminishRate: 0.03})}/>
+        <Icon {...obj} key={index} marginWidth={widthGrowthFunc(screenSize.width,{diminishRate: 0.03})}/>
       ))}
     </Banner>
-    <Center maxWidth={MAX_SCREEN_SIZE} width={widthGrowthFunc(screenSize)}>
+    <Center maxWidth={MAX_SCREEN_SIZE} width={widthGrowthFunc(screenSize.width)}>
       <AutoCompleteForm prompt=">" dict={Aliases} />
     </Center>
     <BottomDiv>
