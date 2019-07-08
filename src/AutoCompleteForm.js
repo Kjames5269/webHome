@@ -1,6 +1,7 @@
-import React, { useState, useRef } from "react";
-import { TabCompDiv, Button } from "./buttons";
-import { Prompt, SearchBar, Input } from "./searchbar";
+import React, { useState, useRef, useContext } from "react";
+import { TabCompDiv, Button } from "./Buttons";
+import { Prompt, SearchBar, Input } from "./SearchBar";
+import Theme from "./Theme";
 
 const TAB_KEY = 9;
 const ENTER_KEY = 13;
@@ -38,7 +39,9 @@ const AutoCompleteForm = props => {
   let [match, setMatch] = useState([]);
   let [matches, setMatches] = useState([]);
   let [tabbed, setTabbed] = useState(false);
-  let textInput = useRef(); 
+  let textInput = useRef();
+
+  const theme = useContext(Theme);
 
   const checkMatches = str => {
     return props.dict.filter(ele => {
@@ -112,13 +115,17 @@ const AutoCompleteForm = props => {
     textInput.current.focus();
   };
 
-  const onOptionKeyDown = (e) => {
-      console.log(e.keyCode);
-      if (e.keyCode == TAB_KEY || e.keyCode == ENTER_KEY || e.keyCode == SHIFT_KEY) {
-        return;
-      }
-      textInput.current.focus();
-  }
+  const onOptionKeyDown = e => {
+    console.log(e.keyCode);
+    if (
+      e.keyCode == TAB_KEY ||
+      e.keyCode == ENTER_KEY ||
+      e.keyCode == SHIFT_KEY
+    ) {
+      return;
+    }
+    textInput.current.focus();
+  };
 
   // -- End of functions --
 
@@ -133,6 +140,7 @@ const AutoCompleteForm = props => {
         key={f + 1}
         data-id={f + 1}
         numPerRow={NUM_PER_ROW}
+        {...theme.colors}
       >
         {e.id}
       </Button>
@@ -155,7 +163,7 @@ const AutoCompleteForm = props => {
           ref={textInput}
         />
       </SearchBar>
-      
+
       <TabCompDiv yLength={options ? Math.ceil(options.length / 4) : options}>
         {options}
       </TabCompDiv>

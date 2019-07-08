@@ -3,29 +3,31 @@ import styled, { css } from "styled-components";
 const Banner = styled.nav`
   ${props =>
     props.url &&
-    props.color &&
+    props.primary &&
     css`
       background: blue;
-      background-image: radial-gradient(rgba(${props.color.join(
+      background-image: radial-gradient(rgba(${props.primary.join(
         ","
-      )},.6), rgba(${props.color.join(",")}, .9)), url('${
+      )},.6), rgba(${props.primary.join(",")}, .9)), url('${
       props.url
     }'); background-repeat: repeat;
       opacity: 0.75;
     `}
   ${props =>
     !props.url &&
-    props.color &&
+    props.primary &&
     css`
-      background: rgba(${props.color.join(",")}, 0.5); // #9b37e8
+      background: rgba(${props.primary.join(",")}, 0.5); // #9b37e8
       opacity: 0.85;
     `}
 
   width: 100%;
-  ${props => props.rightPadding && css`
-    width: calc(100% - ${props.rightPadding}px);
-    padding-right: ${props.rightPadding}px;
-  `}
+  ${props =>
+    props.rightPadding &&
+    css`
+      width: calc(100% - ${props.rightPadding}px);
+      padding-right: ${props.rightPadding}px;
+    `}
   height: 100px;
   font-size: 64px;
   letter-spacing: 4px;
