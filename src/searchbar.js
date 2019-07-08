@@ -23,10 +23,11 @@ const SearchBar = styled.form`
 `;
 
 const Input = styled.input`
+  font-family: monospace, monospace;
   border: none;
   height: inherit;
   //  Padding 2, Prompt width 30
-  width: calc(100% - 32px);
+  width: ${props => (props.length * 11) || 11}px;
   &:focus {
     outline: none;
   }
@@ -42,4 +43,23 @@ const Input = styled.input`
     `}
 `;
 
-export { Prompt, SearchBar, Input };
+const ShadowInput = styled.pre`
+  font-family: monospace, monospace;
+  border: none;
+  height: calc(100% - 10px);
+  //  Padding 2, Prompt width 30
+  width: calc(100% - ${props => ((props.length * 11) || 11) + 34}px);
+  color: DarkGray;
+  &:focus {
+    outline: none;
+  }
+  background-color: inherit;
+  opacity: inherit;
+  float: left;
+  font-size: 18px;
+  display: inline-block;
+  padding: 10px 1px 2px 1px;
+  margin: 0px;
+`;
+
+export { Prompt, SearchBar, Input, ShadowInput };

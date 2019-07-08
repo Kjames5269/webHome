@@ -34,12 +34,12 @@ const Background = styled.div`
   width: 100%;
   height: 100%;
   ${props =>
-    props.offset &&
-    props.src &&
+    props.backgroundOffset &&
+    props.backgroundSrc &&
     css`
       background-repeat: no-repeat;
-      background-image: url(${props.src});
-      background-position: left ${props.offset.left}px top ${props.offset.top}px;
+      background-image: url(${props.backgroundSrc});
+      background-position: left ${props.backgroundOffset.left}px top ${props.backgroundOffset.top}px;
     `}
 `;
 
@@ -120,8 +120,8 @@ const App = props => {
   return (
     <Theme.Provider value={theme}>
       <Background
-        src={theme.image.src}
-        offset={calculateBackgroundOffset(screenSize, theme.image)}
+        backgroundSrc={theme.image.src}
+        backgroundOffset={calculateBackgroundOffset(screenSize, theme.image)}
       >
         <Banner
           url={water}

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext } from "react";
 import { TabCompDiv, Button } from "./Buttons";
-import { Prompt, SearchBar, Input } from "./SearchBar";
+import { Prompt, SearchBar, Input, ShadowInput } from "./SearchBar";
 import Theme from "./Theme";
 
 const TAB_KEY = 9;
@@ -127,7 +127,22 @@ const AutoCompleteForm = props => {
     textInput.current.focus();
   };
 
+  const focusPrimary = e => {
+    textInput.current.focus();
+  }
+
   // -- End of functions --
+
+  let shadowInput = "";
+
+  let results = props.dict.filter(ele => {
+    return ele.id.startsWith(input);
+  });
+
+  //  On one resault set the input and state
+  if (results.length == 1) {
+    shadowInput = results[0].id.substring(input.length);
+  }
 
   let options;
 
@@ -148,7 +163,7 @@ const AutoCompleteForm = props => {
   }
   return (
     <div>
-      <SearchBar action="https://www.duckduckgo.com" onSubmit={handleSubmit}>
+      <SearchBar action="https://www.duckduckgo.com" onSubmit={handleSubmit} onClick={focusPrimary}>
         <Prompt>{props.prompt}</Prompt>
         <Input
           id="searchbar"
@@ -161,7 +176,9 @@ const AutoCompleteForm = props => {
           autoFocus
           match={match.length == 1}
           ref={textInput}
+          length={input.length}
         />
+        <ShadowInput length={input.length}>{shadowInput}</ShadowInput>
       </SearchBar>
 
       <TabCompDiv yLength={options ? Math.ceil(options.length / 4) : options}>
