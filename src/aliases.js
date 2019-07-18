@@ -21,7 +21,9 @@ const Aliases = [
   { id: "youtube", url: "https://www.youtube.com/" },
   { id: "yt", url: "https://www.youtube.com/" },
   { id: "twitch", url: "https://www.twitch.tv/directory/following" },
-  { id: "gmail", url: "https://mail.google.com/mail/u/0/" }
+  { id: "gmail", url: "https://mail.google.com/mail/u/0/" },
+  { id: "stack overflow", url: "https://stackoverflow.com/"},
+  { id: "localhost:8080", url: "http://localhost:8080"}
 ];
 
 export default Aliases;

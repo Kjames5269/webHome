@@ -4,6 +4,8 @@ import TheBigParade from "../resources/TheBigParade.png";
 import Va11halla from "../resources/Va11halla.png";
 import YourName from "../resources/YourName.jpg";
 import img001 from "../resources/img001.jpg";
+import snowing from "../resources/snowing.png"
+import yuruCamp from "../resources/YuruCamp.png"
 
 const bgContextList = {
   blue: {
@@ -62,15 +64,29 @@ const backgrounds = [
     sauce: "Unknown",
     url: "",
     colors: bgContextList.red
+  },
+  {
+    src: snowing,
+    sauce: "Oregairu",
+    url: "https://www.pixiv.net/member_illust.php?illust_id=49831005&mode=medium",
+    colors: bgContextList.white
+  },
+  {
+    src: yuruCamp,
+    sauce: "Yuru Camp",
+    url: "https://www.zerochan.net/2554659",
+    colors: bgContextList.white
   }
 ];
 
 function getPos() {
+  //return backgrounds.length - 1;
   return Math.floor(Math.random() * backgrounds.length);
 }
 
 export default function() {
   const toReturn = new Image();
+
   const randomEle = backgrounds[getPos()];
   toReturn.src = randomEle.src;
 

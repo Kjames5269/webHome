@@ -49,7 +49,7 @@ const ShadowInput = styled.pre`
   height: calc(100% - 10px);
   //  Padding 2, Prompt width 30
   width: calc(100% - ${props => ((props.length * 11) || 11) + 34}px);
-  color: DarkGray;
+  color: rgb(30, 30, 90);
   &:focus {
     outline: none;
   }

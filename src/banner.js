@@ -12,12 +12,14 @@ const Banner = styled.nav`
       props.url
     }'); background-repeat: repeat;
       opacity: 0.75;
+      transition: background-image 1.5s;
     `}
   ${props =>
     !props.url &&
     props.primary &&
     css`
       background: rgba(${props.primary.join(",")}, 0.5); // #9b37e8
+      transition: background 1.5s;
       opacity: 0.85;
     `}
 

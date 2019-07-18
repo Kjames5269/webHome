@@ -12,6 +12,7 @@ import Aliases from "./Aliases.js";
 import Icon from "./Icon.js";
 import { Button } from "./Buttons.js";
 import Theme from "./Theme.js";
+import Backgrounds from "./Backgrounds.js"
 
 const MAX_SCREEN_SIZE = 1150;
 //  The rate at which things move when above the max screen size
@@ -37,23 +38,24 @@ const Background = styled.div`
     props.backgroundOffset &&
     props.backgroundSrc &&
     css`
+      transition: background-image 1.5s;
       background-repeat: no-repeat;
       background-image: url(${props.backgroundSrc});
       background-position: left ${props.backgroundOffset.left}px top ${props.backgroundOffset.top}px;
     `}
 `;
 
-const calculateBackgroundOffset = (screenSize, backgroundSize) => {
+const calculateBackgroundOffset = (screenSize, backgroundImgSize) => {
   //  Inversely proportional to screen size.
 
-  //  TODO make this better
-  if (backgroundSize.naturalWidth == 0 || backgroundSize.naturalHeight == 0) {
+  if (backgroundSize.naturalWidth == 0 || backgroundImgSize.naturalHeight == 0) {
     return { left: 0, top: 0 };
   }
 
   return {
-    left: 150 - (backgroundSize.naturalWidth / screenSize.width) * 150,
-    top: 150 - (backgroundSize.naturalHeight / screenSize.height) * 150
+    //  If the screen size is the same as the img size, the offset will be 0
+    left: 150 - (backgroundImgSize.naturalWidth / screenSize.width) * 150,
+    top: 150 - (backgroundImgSize.naturalHeight / screenSize.height) * 150
   };
 };
 
@@ -106,22 +108,41 @@ const App = props => {
     width: window.innerWidth,
     height: window.innerHeight
   });
+  const [backgroundOffset, setBackgroundOffset] = useState({top: 0, left: 0});
+  const [theme, setTheme] = useState(Backgrounds());
+
   useEffect(() => {
-    const handleWindowResize = () =>
-      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    const handleWindowResize = () => {
+      const sSize = { width: window.innerWidth, height: window.innerHeight };
+      setScreenSize(sSize);
+      setBackgroundOffset(calculateBackgroundOffset(sSize, theme.image))
+    }
+      
     window.addEventListener("resize", handleWindowResize);
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
 
-  const theme = useContext(Theme);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTheme(Backgrounds())
+    }, 1000 * 12.5);
+    return () => {
+      clearInterval(interval);
+    }
+  });
+
+  theme.image.onload = () => {
+    setBackgroundOffset(calculateBackgroundOffset(screenSize, theme.image))
+  }
+
 
   return (
     <Theme.Provider value={theme}>
       <Background
         backgroundSrc={theme.image.src}
-        backgroundOffset={calculateBackgroundOffset(screenSize, theme.image)}
+        backgroundOffset={backgroundOffset}
       >
         <Banner
           url={water}

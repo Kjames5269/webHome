@@ -12,6 +12,7 @@ const Button = styled.button`
     props.tertiary &&
     props.quaternary &&
     css`
+      transition: background-image 1.5s, background-color 1.5s;
       background-color: rgba(${props.primary.join(",")}, 0.4);
       background-image: linear-gradient(
         to bottom,
