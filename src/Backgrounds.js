@@ -2,10 +2,10 @@ import TheArcticCruise from "../resources/TheArcticCruise.png";
 import AlpineSkyline from "../resources/AlpineSkyline.png";
 import TheBigParade from "../resources/TheBigParade.png";
 import Va11halla from "../resources/Va11halla.png";
-import YourName from "../resources/YourName.jpg";
-import img001 from "../resources/img001.jpg";
-import snowing from "../resources/snowing.png"
-import yuruCamp from "../resources/YuruCamp.png"
+import YourName01 from "../resources/YourName01.jpg";
+import YourName02 from "../resources/YourName02.jpg";
+import snowing from "../resources/snowing.png";
+import yuruCamp from "../resources/YuruCamp.png";
 
 const bgContextList = {
   blue: {
@@ -54,21 +54,22 @@ const backgrounds = [
     colors: bgContextList.blue
   },
   {
-    src: YourName,
+    src: YourName01,
     sauce: "Your Name",
     url: "https://www.imdb.com/title/tt5311514/",
     colors: bgContextList.blue
   },
   {
-    src: img001,
-    sauce: "Unknown",
-    url: "",
+    src: YourName02,
+    sauce: "Your Name",
+    url: "https://www.imdb.com/title/tt5311514/",
     colors: bgContextList.red
   },
   {
     src: snowing,
     sauce: "Oregairu",
-    url: "https://www.pixiv.net/member_illust.php?illust_id=49831005&mode=medium",
+    url:
+      "https://www.pixiv.net/member_illust.php?illust_id=49831005&mode=medium",
     colors: bgContextList.white
   },
   {
@@ -80,7 +81,6 @@ const backgrounds = [
 ];
 
 function getPos() {
-  //return backgrounds.length - 1;
   return Math.floor(Math.random() * backgrounds.length);
 }
 

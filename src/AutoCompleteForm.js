@@ -1,6 +1,7 @@
 import React, { useState, useRef, useContext } from "react";
 import { TabCompDiv, Button } from "./Buttons";
 import { Prompt, SearchBar, Input, ShadowInput } from "./SearchBar";
+import { defaultJsxWrapper } from "./PluginAbstract";
 import Theme from "./Theme";
 
 const TAB_KEY = 9;
@@ -28,10 +29,14 @@ const findCommonStrs = (arr, selector) => {
 };
 
 //  Props:
-//      dict: A set of items to enable autocomplete
+//    plugins:
+//     [
+//       (str) => { name: string, jsx: fn(FormJsx, formAttrs, children) => jsx, onEnter: fn(event), isEq: fn(str) }
+//     ]
+//    > See Plugins.js for adding another plugin / formatting
 const AutoCompleteForm = props => {
   //  input is the text within the serach bar
-  //  match is the currently matched option
+  //  match is the currently matched option(s)
   //  matches are the potential matched options
   //  tabbed is true once tab has been pressed in the searchbar
   //  tabbedTo is the current index of the tabbed buttons +1
@@ -44,17 +49,15 @@ const AutoCompleteForm = props => {
   const theme = useContext(Theme);
 
   const checkMatches = str => {
-    return props.dict.filter(ele => {
-      return ele.id === str.trim();
-    });
+    return props.plugins.map(e => e(str))
+    .flat()
+    .filter(e => e.isEq(str));
   };
 
   //  skip to the website or search
   const handleSubmit = e => {
-    if (match.length != 0) {
-      e.preventDefault();
-      window.location.href = match[0].url;
-      return false;
+    if (match != undefined && match.length != 0 && match[0].onEnter) {
+      return match[0].onEnter(e);
     }
     return true;
   };
@@ -64,6 +67,7 @@ const AutoCompleteForm = props => {
     setInput(e.target.value);
     setMatch(checkMatches(e.target.value));
     setMatches([]);
+    setTabbed(false)
   };
 
   //  Tab autocomplete
@@ -74,19 +78,20 @@ const AutoCompleteForm = props => {
       e.preventDefault();
       setTabbed(true);
 
-      //  Filter the results from the alias ids
-      let results = props.dict.filter(ele => {
-        return ele.id.startsWith(input);
-      });
+      // Filter the results from the alias ids
+      let results = props.plugins.map(e => e(input)).flat();
 
-      //  On one resault set the input and state
+      //  On one result set the input and state
       if (results.length == 1) {
-        setInput(results[0].id + " ");
-        setMatch(results);
+        //  Auto complete stops once you pass the input
+        if(results[0].name.length > input.length) {
+          setInput(results[0].name + " ");
+          setMatch(results);
+        }
       }
       //  on multiple results setup options to tab
       else if (results.length > 1) {
-        const commonStr = findCommonStrs(results, selector => selector.id);
+        const commonStr = findCommonStrs(results, e => e.name);
         setInput(commonStr);
         setMatches(results);
         setMatch(checkMatches(commonStr));
@@ -116,7 +121,6 @@ const AutoCompleteForm = props => {
   };
 
   const onOptionKeyDown = e => {
-    console.log(e.keyCode);
     if (
       e.keyCode == TAB_KEY ||
       e.keyCode == ENTER_KEY ||
@@ -129,19 +133,17 @@ const AutoCompleteForm = props => {
 
   const focusPrimary = e => {
     textInput.current.focus();
-  }
+  };
 
   // -- End of functions --
 
   let shadowInput = "";
 
-  let results = props.dict.filter(ele => {
-    return ele.id.startsWith(input);
-  });
+  let results = props.plugins.map(e => e(input)).flat();
 
-  //  On one resault set the input and state
+  //  On one result show the suggested completion
   if (results.length == 1) {
-    shadowInput = results[0].id.substring(input.length);
+    shadowInput = results[0].name.substring(input.length);
   }
 
   let options;
@@ -157,30 +159,37 @@ const AutoCompleteForm = props => {
         numPerRow={NUM_PER_ROW}
         {...theme.colors}
       >
-        {e.id}
+        {e.name}
       </Button>
     ));
   }
+
+  const formInputs = [
+    <Prompt>{props.prompt}</Prompt>,
+    <Input
+      id="searchbar"
+      type="text"
+      value={input}
+      autoComplete="off"
+      onChange={handleChange}
+      onKeyDown={handleTab}
+      autoFocus
+      match={match.length == 1}
+      ref={textInput}
+      length={input.length}
+    />,
+    <ShadowInput length={input.length}>{shadowInput}</ShadowInput>
+  ];
+
+  const formAttrs = { onSubmit: handleSubmit, onClick: focusPrimary };
+  const jsxFunc =
+    results.length == 1 && results[0].jsx
+      ? results[0].jsx
+      : defaultJsxWrapper(input);
+
   return (
     <div>
-      <SearchBar action="https://www.duckduckgo.com" onSubmit={handleSubmit} onClick={focusPrimary}>
-        <Prompt>{props.prompt}</Prompt>
-        <Input
-          id="searchbar"
-          type="text"
-          name="q"
-          value={input}
-          autoComplete="off"
-          onChange={handleChange}
-          onKeyDown={handleTab}
-          autoFocus
-          match={match.length == 1}
-          ref={textInput}
-          length={input.length}
-        />
-        <ShadowInput length={input.length}>{shadowInput}</ShadowInput>
-      </SearchBar>
-
+      {jsxFunc(SearchBar, formAttrs, formInputs)}
       <TabCompDiv yLength={options ? Math.ceil(options.length / 4) : options}>
         {options}
       </TabCompDiv>

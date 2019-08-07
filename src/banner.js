@@ -5,9 +5,9 @@ const Banner = styled.nav`
     props.url &&
     props.primary &&
     css`
-      background: rgb(${props.primary.join(',')});
+      background: rgb(${props.primary.join(",")});
       background-image: radial-gradient(rgba(${props.secondary.join(
-        ','
+        ","
       )},.7), rgba(${props.primary.join(",")}, .8)), url('${
       props.url
     }'); background-repeat: repeat;

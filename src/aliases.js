@@ -13,17 +13,32 @@ const Aliases = [
   { id: "/wg", url: "https://boards.4chan.org/wg/catalog" },
   { id: "chase", url: "https://www.chase.com/" },
   { id: "amex", url: "https://www.americanexpress.com/" },
-  { id: "amazon", url: "https://www.amazon.com/" },
   { id: "reddit", url: "https://www.reddit.com/" },
   { id: "cr", url: "https://www.crunchyroll.com/" },
   { id: "hs", url: "https://horriblesubs.info/" },
   { id: "git", url: "https://github.com/" },
-  { id: "youtube", url: "https://www.youtube.com/" },
   { id: "yt", url: "https://www.youtube.com/" },
   { id: "twitch", url: "https://www.twitch.tv/directory/following" },
   { id: "gmail", url: "https://mail.google.com/mail/u/0/" },
-  { id: "stack overflow", url: "https://stackoverflow.com/"},
-  { id: "localhost:8080", url: "http://localhost:8080"}
+  { id: "stack overflow", url: "https://stackoverflow.com/" },
+  { id: "localhost:8080", url: "http://localhost:8080" }
 ];
 
-export default Aliases;
+const onEnter = (ele, e) => {
+  e.preventDefault();
+  window.location.href = ele.url;
+  return false;
+};
+
+const getAliases = str => {
+  return Aliases.filter(e => e.id.startsWith(str)).map(e => {
+    return {
+      name: e.id,
+      jsx: undefined,
+      onEnter: onEnter.bind(this, e),
+      isEq: str => e.id == str.trim()
+    };
+  });
+};
+
+export default getAliases;

@@ -27,7 +27,7 @@ const Input = styled.input`
   border: none;
   height: inherit;
   //  Padding 2, Prompt width 30
-  width: ${props => (props.length * 11) || 11}px;
+  width: ${props => props.length * 11 || 11}px;
   &:focus {
     outline: none;
   }
@@ -36,11 +36,7 @@ const Input = styled.input`
   float: left;
   font-size: 18px;
 
-  ${props =>
-    props.match &&
-    css`
-      text-decoration: underline;
-    `}
+  ${props => props.match && css``}
 `;
 
 const ShadowInput = styled.pre`
@@ -48,7 +44,7 @@ const ShadowInput = styled.pre`
   border: none;
   height: calc(100% - 10px);
   //  Padding 2, Prompt width 30
-  width: calc(100% - ${props => ((props.length * 11) || 11) + 34}px);
+  width: calc(100% - ${props => (props.length * 11 || 11) + 34}px);
   color: rgb(30, 30, 90);
   &:focus {
     outline: none;
@@ -60,6 +56,7 @@ const ShadowInput = styled.pre`
   display: inline-block;
   padding: 10px 1px 2px 1px;
   margin: 0px;
+  cursor: text;
 `;
 
 export { Prompt, SearchBar, Input, ShadowInput };

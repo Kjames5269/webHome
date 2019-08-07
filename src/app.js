@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 import Clock from "react-live-clock";
@@ -8,11 +8,12 @@ import water from "../resources/water.jpg";
 
 import Banner from "./Banner.js";
 import AutoCompleteForm from "./AutoCompleteForm.js";
-import Aliases from "./Aliases.js";
+import getAliases from "./Aliases.js";
 import Icon from "./Icon.js";
 import { Button } from "./Buttons.js";
 import Theme from "./Theme.js";
-import Backgrounds from "./Backgrounds.js"
+import Backgrounds from "./Backgrounds.js";
+import getPlugins from "./Plugins.js";
 
 const MAX_SCREEN_SIZE = 1150;
 //  The rate at which things move when above the max screen size
@@ -41,14 +42,18 @@ const Background = styled.div`
       transition: background-image 1.5s;
       background-repeat: no-repeat;
       background-image: url(${props.backgroundSrc});
-      background-position: left ${props.backgroundOffset.left}px top ${props.backgroundOffset.top}px;
+      background-position: left ${props.backgroundOffset.left}px top
+        ${props.backgroundOffset.top}px;
     `}
 `;
 
 const calculateBackgroundOffset = (screenSize, backgroundImgSize) => {
   //  Inversely proportional to screen size.
 
-  if (backgroundSize.naturalWidth == 0 || backgroundImgSize.naturalHeight == 0) {
+  if (
+    backgroundImgSize.naturalWidth == 0 ||
+    backgroundImgSize.naturalHeight == 0
+  ) {
     return { left: 0, top: 0 };
   }
 
@@ -108,35 +113,25 @@ const App = props => {
     width: window.innerWidth,
     height: window.innerHeight
   });
-  const [backgroundOffset, setBackgroundOffset] = useState({top: 0, left: 0});
+  const [backgroundOffset, setBackgroundOffset] = useState({ top: 0, left: 0 });
   const [theme, setTheme] = useState(Backgrounds());
 
   useEffect(() => {
     const handleWindowResize = () => {
       const sSize = { width: window.innerWidth, height: window.innerHeight };
       setScreenSize(sSize);
-      setBackgroundOffset(calculateBackgroundOffset(sSize, theme.image))
-    }
-      
+      setBackgroundOffset(calculateBackgroundOffset(sSize, theme.image));
+    };
+
     window.addEventListener("resize", handleWindowResize);
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTheme(Backgrounds())
-    }, 1000 * 12.5);
-    return () => {
-      clearInterval(interval);
-    }
-  });
-
   theme.image.onload = () => {
-    setBackgroundOffset(calculateBackgroundOffset(screenSize, theme.image))
-  }
-
+    setBackgroundOffset(calculateBackgroundOffset(screenSize, theme.image));
+  };
 
   return (
     <Theme.Provider value={theme}>
@@ -177,7 +172,7 @@ const App = props => {
           maxWidth={MAX_SCREEN_SIZE}
           width={widthGrowthFunc(screenSize.width)}
         >
-          <AutoCompleteForm prompt=">" dict={Aliases} />
+          <AutoCompleteForm prompt=">" plugins={[getAliases, getPlugins]} />
         </Center>
         <BottomDiv>
           <Button
