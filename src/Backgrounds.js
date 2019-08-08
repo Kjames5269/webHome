@@ -6,8 +6,15 @@ import YourName01 from "../resources/YourName01.jpg";
 import YourName02 from "../resources/YourName02.jpg";
 import snowing from "../resources/snowing.png";
 import yuruCamp from "../resources/YuruCamp.png";
+import nightPort from "../resources/nightPort.jpg"
 
 const bgContextList = {
+  //  primary: This should be used as the main color
+  //  secondary: This should be used to complement the main
+  //    on smaller components like buttons
+  //  tertiary: This should be used as an accent color
+  //  quaternary: This should be used for hover effects
+
   blue: {
     primary: [40, 20, 75],
     secondary: [65, 65, 200],
@@ -25,6 +32,12 @@ const bgContextList = {
     secondary: [60, 70, 60],
     tertiary: [255, 255, 255],
     quaternary: [60, 75, 60]
+  },
+  yellow: {
+    primary: [205, 89, 0],
+    secondary: [192, 187, 38],
+    tertiary: [0, 195, 188],
+    quaternary: [205, 89, 0]
   }
 };
 
@@ -77,10 +90,17 @@ const backgrounds = [
     sauce: "Yuru Camp",
     url: "https://www.zerochan.net/2554659",
     colors: bgContextList.white
+  },
+  {
+    src: nightPort,
+    sauce: "夜間港",
+    url: "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=74324801",
+    colors: bgContextList.yellow
   }
 ];
 
 function getPos() {
+  // return backgrounds.length -1
   return Math.floor(Math.random() * backgrounds.length);
 }
 

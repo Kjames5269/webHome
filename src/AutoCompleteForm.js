@@ -1,7 +1,7 @@
 import React, { useState, useRef, useContext } from "react";
 import { TabCompDiv, Button } from "./Buttons";
 import { Prompt, SearchBar, Input, ShadowInput } from "./SearchBar";
-import { defaultJsxWrapper } from "./PluginAbstract";
+import { defaultJsxWrapper } from "./plugins/PluginAbstract";
 import Theme from "./Theme";
 
 const TAB_KEY = 9;
@@ -49,9 +49,10 @@ const AutoCompleteForm = props => {
   const theme = useContext(Theme);
 
   const checkMatches = str => {
-    return props.plugins.map(e => e(str))
-    .flat()
-    .filter(e => e.isEq(str));
+    return props.plugins
+      .map(e => e(str))
+      .flat()
+      .filter(e => e.isEq(str));
   };
 
   //  skip to the website or search
@@ -67,7 +68,7 @@ const AutoCompleteForm = props => {
     setInput(e.target.value);
     setMatch(checkMatches(e.target.value));
     setMatches([]);
-    setTabbed(false)
+    setTabbed(false);
   };
 
   //  Tab autocomplete
@@ -84,7 +85,7 @@ const AutoCompleteForm = props => {
       //  On one result set the input and state
       if (results.length == 1) {
         //  Auto complete stops once you pass the input
-        if(results[0].name.length > input.length) {
+        if (results[0].name.length > input.length) {
           setInput(results[0].name + " ");
           setMatch(results);
         }

@@ -8,12 +8,14 @@ import water from "../resources/water.jpg";
 
 import Banner from "./Banner.js";
 import AutoCompleteForm from "./AutoCompleteForm.js";
-import getAliases from "./Aliases.js";
 import Icon from "./Icon.js";
 import { Button } from "./Buttons.js";
 import Theme from "./Theme.js";
 import Backgrounds from "./Backgrounds.js";
-import getPlugins from "./Plugins.js";
+
+import getPlugins from "./plugins/SimplePlugins.js";
+import getAliases from "./plugins/Aliases.js";
+import githubPlugin from "./plugins/GithubPlugin.js";
 
 const MAX_SCREEN_SIZE = 1150;
 //  The rate at which things move when above the max screen size
@@ -172,7 +174,10 @@ const App = props => {
           maxWidth={MAX_SCREEN_SIZE}
           width={widthGrowthFunc(screenSize.width)}
         >
-          <AutoCompleteForm prompt=">" plugins={[getAliases, getPlugins]} />
+          <AutoCompleteForm
+            prompt=">"
+            plugins={[getAliases, getPlugins, githubPlugin]}
+          />
         </Center>
         <BottomDiv>
           <Button

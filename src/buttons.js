@@ -29,8 +29,8 @@ const Button = styled.button`
         rgba(${props.secondary.join(",")}, 0.5)
       );
 
-      :focus {
-        background-color: rgba(${props.primary.join(",")}, 1);
+      :focus, :hover {
+        background-color: rgba(${props.quaternary.join(",")}, 1);
         background-image: linear-gradient(
           to bottom,
           rgba(${props.quaternary.join(",")}, 1),
@@ -59,6 +59,7 @@ const Button = styled.button`
       width: calc(${100 / props.numPerRow}% - 4px);
     `}
   overflow: hidden;
+  cursor: pointer;
 `;
 
 export { TabCompDiv, Button };

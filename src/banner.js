@@ -6,7 +6,7 @@ const Banner = styled.nav`
     props.primary &&
     css`
       background: rgb(${props.primary.join(",")});
-      background-image: radial-gradient(rgba(${props.secondary.join(
+      background-image: radial-gradient(ellipse at bottom, rgba(${props.secondary.join(
         ","
       )},.7), rgba(${props.primary.join(",")}, .8)), url('${
       props.url
