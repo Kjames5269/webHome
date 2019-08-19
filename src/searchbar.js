@@ -28,6 +28,7 @@ const Input = styled.input`
   height: inherit;
   //  Padding 2, Prompt width 30
   width: ${props => props.length * 11 || 11}px;
+  max-width: calc(100% - 34px);
   &:focus {
     outline: none;
   }

@@ -29,7 +29,8 @@ const Button = styled.button`
         rgba(${props.secondary.join(",")}, 0.5)
       );
 
-      :focus, :hover {
+      :focus,
+      :hover {
         background-color: rgba(${props.quaternary.join(",")}, 1);
         background-image: linear-gradient(
           to bottom,

@@ -36,28 +36,21 @@ const findCommonStrs = (arr, selector) => {
 //    > See Plugins.js for adding another plugin / formatting
 const AutoCompleteForm = props => {
   //  input is the text within the serach bar
-  //  match is the currently matched option(s)
-  //  matches are the potential matched options
   //  tabbed is true once tab has been pressed in the searchbar
-  //  tabbedTo is the current index of the tabbed buttons +1
   let [input, setInput] = useState("");
-  let [match, setMatch] = useState([]);
-  let [matches, setMatches] = useState([]);
   let [tabbed, setTabbed] = useState(false);
-  let textInput = useRef();
 
+  const textInput = useRef();
   const theme = useContext(Theme);
 
-  const checkMatches = str => {
-    return props.plugins
-      .map(e => e(str))
-      .flat()
-      .filter(e => e.isEq(str));
-  };
+  //  Get all plugin results for the current input
+  //  Pretend this is immutable
+  const results = props.plugins.map(e => e(input)).flat();
 
   //  skip to the website or search
   const handleSubmit = e => {
-    if (match != undefined && match.length != 0 && match[0].onEnter) {
+    const match = results.filter(e => e.isEq(input));
+    if (match != undefined && match.length == 1 && match[0].onEnter) {
       return match[0].onEnter(e);
     }
     return true;
@@ -66,8 +59,6 @@ const AutoCompleteForm = props => {
   //  Text updating
   const handleChange = e => {
     setInput(e.target.value);
-    setMatch(checkMatches(e.target.value));
-    setMatches([]);
     setTabbed(false);
   };
 
@@ -79,43 +70,36 @@ const AutoCompleteForm = props => {
       e.preventDefault();
       setTabbed(true);
 
-      // Filter the results from the alias ids
-      let results = props.plugins.map(e => e(input)).flat();
-
-      //  On one result set the input and state
+      //  On one result set the input
       if (results.length == 1) {
         //  Auto complete stops once you pass the input
-        if (results[0].name.length > input.length) {
+        if (results[0].name.length >= input.length) {
           setInput(results[0].name + " ");
-          setMatch(results);
         }
       }
       //  on multiple results setup options to tab
       else if (results.length > 1) {
         const commonStr = findCommonStrs(results, e => e.name);
         setInput(commonStr);
-        setMatches(results);
-        setMatch(checkMatches(commonStr));
       }
       return;
     } else if (e.keyCode == TAB_KEY) {
       //  No-OP
     } else {
+      //  If you type anything else, set tabbed to false
       setTabbed(false);
     }
   };
 
   const onOptionsBlur = e => {
     const nums = e.target.getAttribute("data-id");
-    if (nums == matches.length) {
+    if (nums == results.length) {
       setTabbed(false);
     }
   };
 
   const handleAutoComplete = e => {
     setInput(e.target.textContent + " ");
-    setMatch(checkMatches(e.target.textContent));
-    setMatches([]);
     setTabbed(false);
 
     textInput.current.focus();
@@ -132,15 +116,9 @@ const AutoCompleteForm = props => {
     textInput.current.focus();
   };
 
-  const focusPrimary = e => {
-    textInput.current.focus();
-  };
-
   // -- End of functions --
 
   let shadowInput = "";
-
-  let results = props.plugins.map(e => e(input)).flat();
 
   //  On one result show the suggested completion
   if (results.length == 1) {
@@ -149,8 +127,8 @@ const AutoCompleteForm = props => {
 
   let options;
 
-  if (tabbed) {
-    options = matches.map((e, f) => (
+  if (tabbed && results.length > 1) {
+    options = results.map((e, f) => (
       <Button
         onBlur={onOptionsBlur}
         onClick={handleAutoComplete}
@@ -166,8 +144,9 @@ const AutoCompleteForm = props => {
   }
 
   const formInputs = [
-    <Prompt>{props.prompt}</Prompt>,
+    <Prompt key="prompt">{props.prompt}</Prompt>,
     <Input
+      key="searchbar"
       id="searchbar"
       type="text"
       value={input}
@@ -175,14 +154,17 @@ const AutoCompleteForm = props => {
       onChange={handleChange}
       onKeyDown={handleTab}
       autoFocus
-      match={match.length == 1}
+      match={results.length == 1}
       ref={textInput}
       length={input.length}
     />,
-    <ShadowInput length={input.length}>{shadowInput}</ShadowInput>
+    <ShadowInput key="shadowInput" length={input.length}>
+      {shadowInput}
+    </ShadowInput>
   ];
 
-  const formAttrs = { onSubmit: handleSubmit, onClick: focusPrimary };
+  const formAttrs = { onSubmit: handleSubmit, onClick: () => textInput.current.focus() };
+  //  jsxFunc is a function that takes a Form, attrs, and Input fields
   const jsxFunc =
     results.length == 1 && results[0].jsx
       ? results[0].jsx

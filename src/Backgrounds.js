@@ -6,7 +6,7 @@ import YourName01 from "../resources/YourName01.jpg";
 import YourName02 from "../resources/YourName02.jpg";
 import snowing from "../resources/snowing.png";
 import yuruCamp from "../resources/YuruCamp.png";
-import nightPort from "../resources/nightPort.jpg"
+import nightPort from "../resources/nightPort.jpg";
 
 const bgContextList = {
   //  primary: This should be used as the main color
@@ -94,7 +94,8 @@ const backgrounds = [
   {
     src: nightPort,
     sauce: "夜間港",
-    url: "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=74324801",
+    url:
+      "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=74324801",
     colors: bgContextList.yellow
   }
 ];

@@ -12,13 +12,14 @@ const Aliases = [
   { id: "chase", url: "https://www.chase.com/" },
   { id: "amex", url: "https://www.americanexpress.com/" },
   { id: "reddit", url: "https://www.reddit.com/" },
-  { id: "cr", url: "https://www.crunchyroll.com/" },
-  { id: "hs", url: "https://horriblesubs.info/" },
-  { id: "yt", url: "https://www.youtube.com/" },
+  { id: "crunchyroll", url: "https://www.crunchyroll.com/" },
+  { id: "horrible subs", url: "https://horriblesubs.info/" },
   { id: "twitch", url: "https://www.twitch.tv/directory/following" },
   { id: "gmail", url: "https://mail.google.com/mail/u/0/" },
   { id: "stack overflow", url: "https://stackoverflow.com/" },
-  { id: "localhost:8080", url: "http://localhost:8080" }
+  { id: "localhost:8080", url: "http://localhost:8080" },
+  { id: "linkedln", url: "https://www.linkedin.com/"},
+  { id: "facebook", url: "https://www.facebook.com"}
 ];
 
 const onEnter = (url) => (e) => {
@@ -28,7 +29,7 @@ const onEnter = (url) => (e) => {
 };
 
 const getAliases = str => {
-  return Aliases.filter(e => e.id.startsWith(str)).map(e => {
+  return Aliases.filter(e => e.id.startsWith(str.trim())).map(e => {
     return {
       name: e.id,
       jsx: undefined,
