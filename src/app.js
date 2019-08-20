@@ -176,7 +176,7 @@ const App = props => {
         >
           <AutoCompleteForm
             prompt=">"
-            plugins={[getAliases, getPlugins, githubPlugin]}
+            plugins={[...getAliases, ...getPlugins, githubPlugin]}
           />
         </Center>
         <BottomDiv>

@@ -43,7 +43,7 @@ module.exports = {
         title: "WebHome!",
         template: "./src/index.html",
       }),
-      new webpack.HotModuleReplacementPlugin()
+      new webpack.HotModuleReplacementPlugin(),
     ],
     devServer: {
       contentBase: path.join(__dirname, "target"),

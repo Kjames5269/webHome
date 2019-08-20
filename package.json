@@ -1,6 +1,6 @@
 {
-  "name": "webHome",
-  "version": "0.1.0",
+  "name": "web-home",
+  "version": "0.2.0",
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -8,7 +8,8 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server --open --mode development --env.NODE_ENV=local",
-    "prod": "webpack --env prod --progress --profile --colors",
+    "format": "prettier src/*.js --write && prettier src/**/*.js --write",
+    "prod": "webpack --env prod && sed -i '' 's/script/script charset=\"UTF-8\"/' target/index.html",
     "deploy": "gh-pages -d target"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
     "gh-pages": "2.0.1",
     "html-webpack-plugin": "^3.2.0",
     "image-webpack-loader": "^4.6.0",
+    "immutable": "^4.0.0-rc.12",
     "polished": "^3.4.0",
     "prettier": "1.18.2",
     "react-hot-loader": "^4.8.8",

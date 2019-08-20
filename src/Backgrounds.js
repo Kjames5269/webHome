@@ -33,11 +33,17 @@ const bgContextList = {
     tertiary: [255, 255, 255],
     quaternary: [60, 75, 60]
   },
+  purple: {
+    primary: [100, 0, 90],
+    secondary: [100, 80, 200],
+    tertiary: [20, 185, 165],
+    quaternary: [10, 155, 130]
+  },
   yellow: {
-    primary: [205, 89, 0],
-    secondary: [192, 187, 38],
+    primary: [40, 40, 0],
+    secondary: [200, 198, 0],
     tertiary: [0, 195, 188],
-    quaternary: [205, 89, 0]
+    quaternary: [50, 60, 0]
   }
 };
 
@@ -96,12 +102,11 @@ const backgrounds = [
     sauce: "夜間港",
     url:
       "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=74324801",
-    colors: bgContextList.yellow
+    colors: bgContextList.purple
   }
 ];
 
 function getPos() {
-  // return backgrounds.length -1
   return Math.floor(Math.random() * backgrounds.length);
 }
 

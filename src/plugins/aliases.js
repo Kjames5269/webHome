@@ -1,3 +1,5 @@
+import { onEnterHelper, plugin } from "./PluginAbstract";
+
 const Aliases = [
   {
     id: "but it was me",
@@ -16,27 +18,21 @@ const Aliases = [
   { id: "horrible subs", url: "https://horriblesubs.info/" },
   { id: "twitch", url: "https://www.twitch.tv/directory/following" },
   { id: "gmail", url: "https://mail.google.com/mail/u/0/" },
-  { id: "stack overflow", url: "https://stackoverflow.com/" },
   { id: "localhost:8080", url: "http://localhost:8080" },
-  { id: "linkedln", url: "https://www.linkedin.com/"},
-  { id: "facebook", url: "https://www.facebook.com"}
+  { id: "linkedln", url: "https://www.linkedin.com/" },
+  { id: "facebook", url: "https://www.facebook.com" }
 ];
 
-const onEnter = (url) => (e) => {
-  e.preventDefault();
-  window.location.href = url;
-  return false;
+//  Takes an elememnt from the commandList and returns a function
+//  that takes a cmd and args
+const getPlugin = aliasEle => (args, jsx) => {
+  return {
+    name: aliasEle.id,
+    jsx: undefined,
+    onEnter: args.length == 0 ? onEnterHelper(aliasEle.url) : undefined
+  };
 };
 
-const getAliases = str => {
-  return Aliases.filter(e => e.id.startsWith(str.trim())).map(e => {
-    return {
-      name: e.id,
-      jsx: undefined,
-      onEnter: onEnter(e.url),
-      isEq: str => e.id == str.trim()
-    };
-  });
-};
+const aliasPlugins = Aliases.map(e => plugin(getPlugin(e), e.id));
 
-export default getAliases;
+export default aliasPlugins;

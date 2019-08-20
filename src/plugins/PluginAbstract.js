@@ -1,9 +1,11 @@
 import React from "react";
 
-const delimiter = " "
+const delimiter = " ";
 
 const strToInput = (queryName, queryParam) => {
-  return <input type="hidden" name={queryName} value={queryParam} />;
+  return (
+    <input key={queryName} type="hidden" name={queryName} value={queryParam} />
+  );
 };
 
 //  Takes a url, and children to add to the form,
@@ -28,15 +30,32 @@ const onEnterHelper = url => e => {
   return false;
 };
 
-//  Takes a string and returns the 'cmd' and an array of args
-const parseCmd = str => {
-  const splitStr = str.split(delimiter);
-  const cmd = splitStr[0];
-  const args = splitStr.slice(1).filter(e => e != "");
-  return {
-    cmd: cmd,
-    args: args
-  }
-}
+//  Standardizes parsing
+//  export plugin(simplePlugin, 'name')
+//  fn should be the plugin function that takes (args, jsxWrapper) => { name, jsx, onEnter, isEq }
+const plugin = (fn, name) => str => {
+  const cmd = str.substring(0, name.length);
+  const argString = str.substring(name.length + 1); // for delimiter
 
-export { jsxWrapper, defaultJsxWrapper, strToInput, onEnterHelper, parseCmd };
+  //  valid if the command is not long enough for a delimiter
+  //  or the delimiter exists
+  const localDelimiter = str.charAt(name.length);
+  const valid = localDelimiter == "" || localDelimiter == delimiter;
+
+  if (valid && name.startsWith(cmd)) {
+    const args = argString.split(delimiter).filter(e => e != "");
+    let retVal = fn(args, jsxWrapper);
+
+    if (cmd != name) {
+      retVal.jsx = undefined;
+      retVal.onEnter = undefined;
+    }
+    retVal.isEq = cmd === retVal.name;
+
+    return retVal;
+  }
+
+  return [];
+};
+
+export { jsxWrapper, defaultJsxWrapper, strToInput, onEnterHelper, plugin };

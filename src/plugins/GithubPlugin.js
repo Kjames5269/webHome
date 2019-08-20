@@ -1,44 +1,35 @@
-import { jsxWrapper, strToInput, onEnterHelper, parseCmd } from "./PluginAbstract";
+import { strToInput, onEnterHelper, plugin } from "./PluginAbstract";
 
 const name = "git";
-const gitURL = "https://github.com"
+const gitURL = "https://github.com";
 
-const getGithubJsx = args => {
+const getGithubJsx = (args, jsxWrapper) => {
   return jsxWrapper(`${gitURL}/search`, [
     strToInput("q", args.join(" ")),
     strToInput("type", "code")
   ]);
 };
 
-const githubPlugin = str => {
-  const { cmd, args } = parseCmd(str)
-
-  if (!name.startsWith(cmd)) {
-    return [];
-  }
-
+const githubPlugin = (args, jsxWrapper) => {
   let onEnter = undefined;
-  switch(args[0]) {
+  switch (args[0]) {
     case "issues":
-        onEnter = onEnterHelper(`${gitURL}/issues`);
-        break;
+      onEnter = onEnterHelper(`${gitURL}/issues`);
+      break;
     case "prs":
-        onEnter = onEnterHelper(`${gitURL}/pulls`);
-        break;
+      onEnter = onEnterHelper(`${gitURL}/pulls`);
+      break;
   }
 
   if (args.length == 0) {
     onEnter = onEnterHelper(`${gitURL}/`);
   }
 
-  return [
-    {
-      name: name,
-      jsx: (cmd == name) ? getGithubJsx(args) : undefined,
-      onEnter: (cmd == name) ? onEnter : undefined,
-      isEq: str => parseCmd(str).cmd == name
-    }
-  ];
+  return {
+    name: name,
+    jsx: getGithubJsx(args, jsxWrapper),
+    onEnter: onEnter
+  };
 };
 
-export default githubPlugin;
+export default plugin(githubPlugin, name);
