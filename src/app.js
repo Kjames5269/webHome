@@ -10,12 +10,11 @@ import Banner from "./Banner.js";
 import AutoCompleteForm from "./AutoCompleteForm.js";
 import Icon from "./Icon.js";
 import { Button } from "./Buttons.js";
-import Theme from "./Theme.js";
-import Backgrounds from "./Backgrounds.js";
+import { ThemeContext } from "./Theme.js";
 
-import getPlugins from "./plugins/SimplePlugins.js";
-import getAliases from "./plugins/Aliases.js";
-import githubPlugin from "./plugins/GithubPlugin.js";
+import Backgrounds from "./Backgrounds";
+
+import Plugins from "./plugins/Plugins.js";
 
 const MAX_SCREEN_SIZE = 1150;
 //  The rate at which things move when above the max screen size
@@ -66,7 +65,7 @@ const calculateBackgroundOffset = (screenSize, backgroundImgSize) => {
   };
 };
 
-const goToHref = href => {
+const goToHref = href => () => {
   window.location.href = href;
 };
 
@@ -136,7 +135,7 @@ const App = props => {
   };
 
   return (
-    <Theme.Provider value={theme}>
+    <ThemeContext.Provider value={theme}>
       <Background
         backgroundSrc={theme.image.src}
         backgroundOffset={backgroundOffset}
@@ -174,22 +173,19 @@ const App = props => {
           maxWidth={MAX_SCREEN_SIZE}
           width={widthGrowthFunc(screenSize.width)}
         >
-          <AutoCompleteForm
-            prompt=">"
-            plugins={[...getAliases, ...getPlugins, githubPlugin]}
-          />
+          <AutoCompleteForm prompt=">" plugins={Plugins} />
         </Center>
         <BottomDiv>
           <Button
             {...theme.colors}
             style={{ margin: 0 + "px" }}
-            onClick={goToHref.bind(this, theme.url)}
+            onClick={goToHref(theme.url)}
           >
             {theme.sauce}
           </Button>
         </BottomDiv>
       </Background>
-    </Theme.Provider>
+    </ThemeContext.Provider>
   );
 };
 

@@ -27,7 +27,6 @@ const Aliases = [
 //  that takes a cmd and args
 const getPlugin = aliasEle => (args, jsx) => {
   return {
-    name: aliasEle.id,
     jsx: undefined,
     onEnter: args.length == 0 ? onEnterHelper(aliasEle.url) : undefined
   };

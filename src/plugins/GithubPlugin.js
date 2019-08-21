@@ -26,7 +26,6 @@ const githubPlugin = (args, jsxWrapper) => {
   }
 
   return {
-    name: name,
     jsx: getGithubJsx(args, jsxWrapper),
     onEnter: onEnter
   };

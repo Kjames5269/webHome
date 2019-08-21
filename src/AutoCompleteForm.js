@@ -1,13 +1,10 @@
-import React, { useState, useRef, useContext } from "react";
-import { TabCompDiv, Button } from "./Buttons";
+import React, { useState, useRef } from "react";
 import { Prompt, SearchBar, Input, ShadowInput } from "./SearchBar";
+import { AutoCompleteOptions } from "./AutoCompleteOptions";
 import { defaultJsxWrapper } from "./plugins/PluginAbstract";
-import Theme from "./Theme";
 import { List } from "immutable";
+import { KEY_TAB } from "keycode-js";
 
-const TAB_KEY = 9;
-const ENTER_KEY = 13;
-const SHIFT_KEY = 16;
 const NUM_PER_ROW = 4;
 
 //  arr: an Array of objects / strings
@@ -42,10 +39,11 @@ const AutoCompleteForm = props => {
   let [tabbed, setTabbed] = useState(false);
 
   const textInput = useRef();
-  const theme = useContext(Theme);
 
   //  Get all plugin results for the current input
-  const results = List(props.plugins.map(e => e(input)).flat());
+  const results = List(
+    props.plugins.map(e => e(input)).filter(e => e != undefined)
+  );
 
   //  skip to the website or search
   const handleSubmit = event => {
@@ -66,7 +64,7 @@ const AutoCompleteForm = props => {
   const handleTab = e => {
     //  The first tab checks for auto completion and sets
     //  the state to tabbed
-    if (e.keyCode == TAB_KEY && !tabbed) {
+    if (e.keyCode == KEY_TAB && !tabbed) {
       e.preventDefault();
       setTabbed(true);
 
@@ -84,7 +82,7 @@ const AutoCompleteForm = props => {
         setInput(commonStr);
       }
       return;
-    } else if (e.keyCode == TAB_KEY) {
+    } else if (e.keyCode == KEY_TAB) {
       //  No-OP
     } else {
       //  If you type anything else, set tabbed to false
@@ -92,14 +90,9 @@ const AutoCompleteForm = props => {
     }
   };
 
-  const onOptionsBlur = e => {
-    const nums = e.target.getAttribute("data-id");
-    if (nums == results.size) {
-      setTabbed(false);
-    }
-  };
-
   const handleAutoComplete = e => {
+    e.preventDefault();
+
     setInput(e.target.textContent + " ");
     setTabbed(false);
 
@@ -107,14 +100,11 @@ const AutoCompleteForm = props => {
   };
 
   const onOptionKeyDown = e => {
-    if (
-      e.keyCode == TAB_KEY ||
-      e.keyCode == ENTER_KEY ||
-      e.keyCode == SHIFT_KEY
-    ) {
-      return;
-    }
     textInput.current.focus();
+  };
+
+  const onRollover = () => {
+    setTabbed(false);
   };
 
   // -- End of functions --
@@ -126,23 +116,18 @@ const AutoCompleteForm = props => {
     shadowInput = results.get(0).name.substring(input.length);
   }
 
-  let options;
-
-  if (tabbed && results.size > 1) {
-    options = results.map((e, f) => (
-      <Button
-        onBlur={onOptionsBlur}
-        onClick={handleAutoComplete}
+  const options =
+    tabbed && results.size > 1 ? (
+      <AutoCompleteOptions
+        names={results.map(e => e.name)}
+        onSelect={handleAutoComplete}
         onKeyDown={onOptionKeyDown}
-        key={f + 1}
-        data-id={f + 1}
         numPerRow={NUM_PER_ROW}
-        {...theme.colors}
-      >
-        {e.name}
-      </Button>
-    ));
-  }
+        onRollover={onRollover}
+      />
+    ) : (
+      undefined
+    );
 
   const formInputs = [
     <Prompt key="prompt">{props.prompt}</Prompt>,
@@ -177,9 +162,7 @@ const AutoCompleteForm = props => {
   return (
     <div>
       {jsxFunc(SearchBar, formAttrs, formInputs)}
-      <TabCompDiv yLength={options ? Math.ceil(options.length / 4) : options}>
-        {options}
-      </TabCompDiv>
+      {options}
     </div>
   );
 };

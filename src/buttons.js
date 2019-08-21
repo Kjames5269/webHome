@@ -51,6 +51,8 @@ const Button = styled.button`
   color: rgba(255, 255, 255, 0.85);
   font-size: 18px;
 
+  white-space: nowrap;
+
   float: left;
   margin: 2px 2px 0px 2px;
   padding: 8px 12px 8px 12px;

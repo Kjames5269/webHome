@@ -15,7 +15,7 @@ const commandList = [
     }
   },
   {
-    name: "ulitmate guitar",
+    name: "ultimate guitar",
     url: "https://www.ultimate-guitar.com/",
     doEval: (url, args, jsxWrapper) => {
       return jsxWrapper(`${url}search.php`, [
@@ -61,7 +61,6 @@ const commandList = [
 //  that takes a cmd and args
 const getPlugin = cle => (args, jsxWrapper) => {
   return {
-    name: cle.name,
     jsx: cle.doEval(cle.url, args, jsxWrapper),
     onEnter: args.length == 0 ? onEnterHelper(cle.url) : undefined
   };

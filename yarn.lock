@@ -4093,6 +4093,11 @@ jsonfile@^4.0.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+keycode-js@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/keycode-js/-/keycode-js-2.0.1.tgz#685e467dfbeb303bcf6e044fa4192c901861bb1b"
+  integrity sha512-z4s0Ii987H8HToC2Gmg00sXDIllSG6yIlLh1UuOpbagoqBbPlK6hk/AA+OveDlavxdV94lIafiEEt3RnotU9Cw==
+
 keyv@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/keyv/-/keyv-3.0.0.tgz#44923ba39e68b12a7cec7df6c3268c031f2ef373"

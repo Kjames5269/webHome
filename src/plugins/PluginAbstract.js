@@ -32,7 +32,8 @@ const onEnterHelper = url => e => {
 
 //  Standardizes parsing
 //  export plugin(simplePlugin, 'name')
-//  fn should be the plugin function that takes (args, jsxWrapper) => { name, jsx, onEnter, isEq }
+//  fn: (args, jsxWrapper) =>
+//    { jsx: Jsx, onEnter: fn(e) }
 const plugin = (fn, name) => str => {
   const cmd = str.substring(0, name.length);
   const argString = str.substring(name.length + 1); // for delimiter
@@ -43,19 +44,19 @@ const plugin = (fn, name) => str => {
   const valid = localDelimiter == "" || localDelimiter == delimiter;
 
   if (valid && name.startsWith(cmd)) {
-    const args = argString.split(delimiter).filter(e => e != "");
-    let retVal = fn(args, jsxWrapper);
-
+    //  if the command isn't equal to the name, return how to get the name
     if (cmd != name) {
-      retVal.jsx = undefined;
-      retVal.onEnter = undefined;
+      return { name: name };
     }
-    retVal.isEq = cmd === retVal.name;
 
-    return retVal;
+    const args = argString.split(delimiter).filter(e => e != "");
+
+    return {
+      ...fn(args, jsxWrapper),
+      isEq: cmd === name,
+      name: name
+    };
   }
-
-  return [];
 };
 
 export { jsxWrapper, defaultJsxWrapper, strToInput, onEnterHelper, plugin };
