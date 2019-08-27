@@ -1,8 +1,19 @@
 import getPlugins from "./SimplePlugins.js";
 import getAliases from "./Aliases.js";
 import githubPlugin from "./GithubPlugin.js";
+import spotifyPlugin from "./spotifyPlugin.js";
+import { isProduction, hasDuplicates } from "../utils/Utils.js";
 
-export default [...getPlugins, ...getAliases, githubPlugin];
+const arr = [...getPlugins, ...getAliases, githubPlugin, spotifyPlugin];
+
+//  Check to see if there are duplicates if it's not in production
+if(!isProduction()) {
+    hasDuplicates(arr.map(e => e("").name), (e) => {
+        throw new Error(`A plugin with the name '${e}' already exists`)
+    })
+}
+
+export default arr;
 
 /*
  * Plugins:
