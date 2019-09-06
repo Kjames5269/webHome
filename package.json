@@ -9,6 +9,7 @@
     "build": "webpack",
     "start": "webpack-dev-server --open --mode development --env.NODE_ENV=local",
     "format": "prettier src/*.js --write && prettier src/**/*.js --write",
+    "eslint": "eslint src/*.js; eslint src/**/*.js",
     "prod": "webpack --env prod && sed -i '' 's/script/script charset=\"UTF-8\"/' target/index.html",
     "deploy": "gh-pages -d target"
   },
@@ -25,6 +26,9 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "babel-polyfill": "^6.26.0",
+    "eslint": "^6.3.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
     "gh-pages": "2.0.1",
     "html-webpack-plugin": "^3.2.0",
     "image-webpack-loader": "^4.6.0",

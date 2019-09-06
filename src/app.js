@@ -12,7 +12,7 @@ import Icon from "./Icon.js";
 import { Button } from "./Buttons.js";
 import { ThemeContext } from "./Theme.js";
 
-import Backgrounds from "./Backgrounds";
+import Backgrounds, { Background } from "./Backgrounds";
 
 import Plugins from "./plugins/Plugins.js";
 
@@ -30,39 +30,6 @@ const widthGrowthFunc = (
   return screenSize <= maxSize
     ? undefined
     : (screenSize - maxSize) * diminishRate;
-};
-
-//  Props: offset: { left, top }
-const Background = styled.div`
-  width: 100%;
-  height: 100%;
-  ${props =>
-    props.backgroundOffset &&
-    props.backgroundSrc &&
-    css`
-      transition: background-image 1.5s;
-      background-repeat: no-repeat;
-      background-image: url(${props.backgroundSrc});
-      background-position: left ${props.backgroundOffset.left}px top
-        ${props.backgroundOffset.top}px;
-    `}
-`;
-
-const calculateBackgroundOffset = (screenSize, backgroundImgSize) => {
-  //  Inversely proportional to screen size.
-
-  if (
-    backgroundImgSize.naturalWidth == 0 ||
-    backgroundImgSize.naturalHeight == 0
-  ) {
-    return { left: 0, top: 0 };
-  }
-
-  return {
-    //  If the screen size is the same as the img size, the offset will be 0
-    left: 150 - (backgroundImgSize.naturalWidth / screenSize.width) * 150,
-    top: 150 - (backgroundImgSize.naturalHeight / screenSize.height) * 150
-  };
 };
 
 const goToHref = href => () => {
@@ -108,38 +75,28 @@ const logos = [
 ];
 
 //  APP
-
 const App = props => {
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight
   });
-  const [backgroundOffset, setBackgroundOffset] = useState({ top: 0, left: 0 });
   const [theme, setTheme] = useState(Backgrounds());
 
   useEffect(() => {
     const handleWindowResize = () => {
       const sSize = { width: window.innerWidth, height: window.innerHeight };
       setScreenSize(sSize);
-      setBackgroundOffset(calculateBackgroundOffset(sSize, theme.image));
     };
 
     window.addEventListener("resize", handleWindowResize);
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
-  }, []);
-
-  theme.image.onload = () => {
-    setBackgroundOffset(calculateBackgroundOffset(screenSize, theme.image));
-  };
+  });
 
   return (
     <ThemeContext.Provider value={theme}>
-      <Background
-        backgroundSrc={theme.image.src}
-        backgroundOffset={backgroundOffset}
-      >
+      <Background src={theme.src} colors={theme.colors} screenSize={screenSize}>
         <Banner
           url={water}
           {...theme.colors}

@@ -1,3 +1,6 @@
+import styled, { css } from "styled-components";
+import React, { useState } from "react";
+
 import TheArcticCruise from "../resources/TheArcticCruise.png";
 import AlpineSkyline from "../resources/AlpineSkyline.png";
 import TheBigParade from "../resources/TheBigParade.png";
@@ -111,10 +114,90 @@ function getPos() {
 }
 
 export default function() {
-  const toReturn = new Image();
-
-  const randomEle = backgrounds[getPos()];
-  toReturn.src = randomEle.src;
-
-  return { image: toReturn, ...randomEle };
+  return backgrounds[getPos()];
 }
+
+const calculateBackgroundOffset = (screenSize, image) => {
+  //  Inversely proportional to screen size.
+
+  if (image.naturalWidth == 0 || image.naturalHeight == 0) {
+    return { left: 0, top: 0 };
+  }
+
+  return {
+    //  If the screen size is the same as the img size, the offset will be 0
+    left: 150 - (image.naturalWidth / screenSize.width) * 150,
+    top: 150 - (image.naturalHeight / screenSize.height) * 150
+  };
+};
+
+//  props: screenSize, children, src, colors
+const Background = props => {
+  const [isLoaded, setLoaded] = useState(false);
+  const { children, screenSize, src, colors } = props;
+  const image = new Image();
+  image.src = src;
+
+  const propsToPass = isLoaded
+    ? {
+        backgroundOffset: calculateBackgroundOffset(screenSize, image),
+        backgroundSrc: image.src
+      }
+    : null;
+
+  image.onload = () => setLoaded(true);
+
+  return (
+    <Wrap>
+      <BackgroundDiv
+        opacityProp={isLoaded ? 1 : 0}
+        {...propsToPass}
+      ></BackgroundDiv>
+      <BackgroundColor {...colors} opacityProp={isLoaded ? 0 : 1} />
+      {children}
+    </Wrap>
+  );
+};
+
+const Wrap = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+const BackgroundColor = styled(Wrap)`
+  ${props =>
+    props.primary &&
+    css`
+      background-color: rgba(${props.primary.join(",")}, 0.9);
+    `}
+  transition: opacity .5s;
+  ${props =>
+    props.opacityProp != undefined &&
+    css`
+      opacity: ${props.opacityProp};
+    `}
+`;
+
+const BackgroundDiv = styled(Wrap)`
+  ${props =>
+    props.backgroundOffset &&
+    props.backgroundSrc &&
+    css`
+      background-repeat: no-repeat;
+      background-image: url(${props.backgroundSrc});
+      background-position: left ${props.backgroundOffset.left}px top
+        ${props.backgroundOffset.top}px;
+    `}
+
+  transition: opacity .35s;
+  ${props =>
+    props.opacityProp != undefined &&
+    css`
+      opacity: ${props.opacityProp};
+    `}
+`;
+
+export { Background };

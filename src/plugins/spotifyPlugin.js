@@ -3,14 +3,13 @@ import { onEnterHelper, plugin } from "./PluginAbstract";
 const name = "spotify";
 const spotifyURL = "https://open.spotify.com";
 
-const spotifyPlugin = (args) => {
+const spotifyPlugin = args => {
   let onEnter = undefined;
 
   if (args.length == 0) {
     onEnter = onEnterHelper(`${spotifyURL}/`);
-  }
-  else {
-      onEnter = onEnterHelper(`${spotifyURL}/search/` + args.join(' '))
+  } else {
+    onEnter = onEnterHelper(`${spotifyURL}/search/` + args.join(" "));
   }
 
   return {
