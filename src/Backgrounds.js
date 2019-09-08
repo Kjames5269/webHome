@@ -149,10 +149,10 @@ const Background = props => {
 
   return (
     <Wrap>
-      <BackgroundDiv
+      <BackgroundImage
         opacityProp={isLoaded ? 1 : 0}
         {...propsToPass}
-      ></BackgroundDiv>
+      ></BackgroundImage>
       <BackgroundColor {...colors} opacityProp={isLoaded ? 0 : 1} />
       {children}
     </Wrap>
@@ -167,21 +167,25 @@ const Wrap = styled.div`
   left: 0;
 `;
 
-const BackgroundColor = styled(Wrap)`
+const BackgroundDiv = styled(Wrap)`
+  ${props =>
+    props.opacityProp != undefined &&
+    css`
+      opacity: ${props.opacityProp};
+    `}
+  z-index: -1;
+`;
+
+const BackgroundColor = styled(BackgroundDiv)`
   ${props =>
     props.primary &&
     css`
       background-color: rgba(${props.primary.join(",")}, 0.9);
     `}
   transition: opacity .5s;
-  ${props =>
-    props.opacityProp != undefined &&
-    css`
-      opacity: ${props.opacityProp};
-    `}
 `;
 
-const BackgroundDiv = styled(Wrap)`
+const BackgroundImage = styled(BackgroundDiv)`
   ${props =>
     props.backgroundOffset &&
     props.backgroundSrc &&
@@ -193,11 +197,6 @@ const BackgroundDiv = styled(Wrap)`
     `}
 
   transition: opacity .35s;
-  ${props =>
-    props.opacityProp != undefined &&
-    css`
-      opacity: ${props.opacityProp};
-    `}
 `;
 
 export { Background };
