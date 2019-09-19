@@ -30,11 +30,11 @@ const Banner = styled.nav`
       width: calc(100% - ${props.rightPadding}px);
       padding-right: ${props.rightPadding}px;
     `}
-  height: 100px;
-  font-size: 64px;
-  letter-spacing: 4px;
-  border-bottom: solid black 3px;
-  border-top: solid black 3px;
+  height: 12vh;
+  font-size: 7.5vh;
+  letter-spacing: 0.4vw;
+  border-bottom: solid black 0.25vh;
+  border-top: solid black 0.25vh;
 `;
 
 export default Banner;
