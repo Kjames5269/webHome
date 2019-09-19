@@ -120,15 +120,53 @@ export default function() {
 const calculateBackgroundOffset = (screenSize, image) => {
   //  Inversely proportional to screen size.
 
-  if (image.naturalWidth == 0 || image.naturalHeight == 0) {
-    return { left: 0, top: 0 };
-  }
-
   return {
     //  If the screen size is the same as the img size, the offset will be 0
-    left: 150 - (image.naturalWidth / screenSize.width) * 150,
-    top: 150 - (image.naturalHeight / screenSize.height) * 150
+    left: 150 - (image.width / screenSize.width) * 150,
+    top: 150 - (image.height / screenSize.height) * 150
   };
+};
+
+const scaleImage = (image, screenSize) => {
+  if (image.naturalWidth == 0 || image.naturalHeight == 0) {
+    return {
+      width: image.naturalWidth,
+      height: image.naturalHeight
+    };
+  }
+
+  if (
+    image.naturalHeight > screenSize.height &&
+    image.naturalWidth > screenSize.width
+  ) {
+    return {
+      width: image.naturalWidth,
+      height: image.naturalHeight
+    };
+  }
+
+  let width = image.naturalWidth;
+  let height = image.naturalHeight;
+
+  const aspectRatio = width / height;
+
+  const widthDiff = screenSize.width - width;
+  const heightDiff = screenSize.height - height;
+
+  const potentialHeight = height + widthDiff * (1 / aspectRatio);
+  const potentialWidth = width + heightDiff * aspectRatio;
+
+  if (potentialHeight < screenSize.height) {
+    return {
+      width: potentialWidth,
+      height: screenSize.height
+    };
+  } else {
+    return {
+      width: screenSize.width,
+      height: potentialHeight
+    };
+  }
 };
 
 //  props: screenSize, children, src, colors
@@ -138,21 +176,34 @@ const Background = props => {
   const image = new Image();
   image.src = src;
 
-  const propsToPass = isLoaded
+  let propsToPass = isLoaded
     ? {
-        backgroundOffset: calculateBackgroundOffset(screenSize, image),
-        backgroundSrc: image.src
+        backgroundOffset: calculateBackgroundOffset(
+          screenSize,
+          scaleImage(image, screenSize)
+        ),
+        src: image.src,
+        alt: "background image"
       }
     : null;
 
   image.onload = () => setLoaded(true);
 
+  if (
+    image.naturalHeight < screenSize.height ||
+    image.naturalWidth < screenSize.width
+  ) {
+    propsToPass = {
+      ...propsToPass,
+      ...scaleImage(image, screenSize)
+    };
+  }
+
   return (
     <Wrap>
-      <BackgroundImage
-        opacityProp={isLoaded ? 1 : 0}
-        {...propsToPass}
-      ></BackgroundImage>
+      <BackgroundContainer opacityProp={isLoaded ? 1 : 0}>
+        <BackgroundImage {...propsToPass} />
+      </BackgroundContainer>
       <BackgroundColor {...colors} opacityProp={isLoaded ? 0 : 1} />
       {children}
     </Wrap>
@@ -185,18 +236,21 @@ const BackgroundColor = styled(BackgroundDiv)`
   transition: opacity .5s;
 `;
 
-const BackgroundImage = styled(BackgroundDiv)`
+const BackgroundImage = styled.img`
+  position: absolute;
   ${props =>
     props.backgroundOffset &&
-    props.backgroundSrc &&
     css`
-      background-repeat: no-repeat;
-      background-image: url(${props.backgroundSrc});
-      background-position: left ${props.backgroundOffset.left}px top
-        ${props.backgroundOffset.top}px;
+      left: ${props.backgroundOffset.left}px
+      top: ${props.backgroundOffset.top}px;
     `}
+`;
 
-  transition: opacity .35s;
+const BackgroundContainer = styled(BackgroundDiv)`
+  overflow: hidden;
+  object-fit: contain;
+
+  transition: opacity 0.35s;
 `;
 
 export { Background };
