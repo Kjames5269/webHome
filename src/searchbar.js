@@ -1,41 +1,39 @@
 import styled, { css } from "styled-components";
 
 const Prompt = styled.p`
-  width: 15px;
-  padding: 11px;
-  padding-right: 5px;
-  padding-left: 10px;
+  width: 1.5vw;
+  padding: 1vh 0.5vw 1vh 1.5vw;
   display: inline-block;
   margin: 0px;
   background-color: inherit;
-  font-size: 16px;
+  font-size: 2vh;
   float: left;
   opacity: inherit;
 `;
 
 const SearchBar = styled.form`
   width: 100%;
-  height: 38px;
+  height: 4.4vh;
   opacity: 0.7;
   margin-right: 0px;
   background-color: white;
-  border: solid black 3px;
+  border: solid black 0.285vh;
 `;
 
 const Input = styled.input`
   font-family: monospace, monospace;
   border: none;
-  height: inherit;
-  //  Padding 2, Prompt width 30
-  width: ${props => props.length * 11 || 11}px;
-  max-width: calc(100% - 34px);
+  height: calc(100% - 0.285vh);
+  //  Padding 2vw, Prompt width 2vw
+  width: ${props => props.length * 1.4 || 1.4}vh;
+  max-width: calc(100% - 3.9vw);
   &:focus {
     outline: none;
   }
   background-color: inherit;
   opacity: inherit;
   float: left;
-  font-size: 18px;
+  font-size: 2.25vh;
 
   ${props => props.match && css``}
 `;
@@ -43,17 +41,18 @@ const Input = styled.input`
 const ShadowInput = styled.pre`
   font-family: monospace, monospace;
   border: none;
-  height: calc(100% - 10px);
-  //  Padding 2, Prompt width 30
-  width: calc(100% - ${props => (props.length * 11 || 11) + 34}px);
-  color: rgb(30, 30, 90);
+  height: calc(100% - 1.085vh);
+  padding-top: 0.8vh;
+  //  Padding .4vw, Prompt width 2vw
+  width: calc(100% - ${props => props.length * 1.4 || 1.4}vh - 3.9vw);
+  color: rgb(50, 50, 120);
   &:focus {
     outline: none;
   }
   background-color: inherit;
   opacity: inherit;
   float: left;
-  font-size: 18px;
+  font-size: 2.25vh;
   display: inline-block;
   padding: 10px 0 2px 0;
   margin: 0px;

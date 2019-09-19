@@ -1,4 +1,5 @@
 import { onEnterHelper, plugin } from "./PluginAbstract";
+import { useEffect } from "react";
 
 const name = "spotify";
 const spotifyURL = "https://open.spotify.com";

@@ -53,7 +53,7 @@ ${props =>
   }
 
   margin: auto;
-  margin-top: 100px;
+  margin-top: 10vh;
   /* bring your own prefixes */
 `;
 
@@ -111,7 +111,7 @@ const App = props => {
             style={{
               color: "white",
               float: "right",
-              marginTop: "15px",
+              marginTop: "1.50vh",
               marginRight: "25px"
             }}
           />
