@@ -116,10 +116,10 @@ const App = props => {
             }}
           />
 
-          {logos.map((obj, index) => (
+          {logos.map(obj => (
             <Icon
               {...obj}
-              key={index}
+              key={obj.alt}
               marginWidth={widthGrowthFunc(screenSize.width, {
                 diminishRate: 0.03
               })}

@@ -70,7 +70,7 @@ const AutoCompleteOptions = props => {
 
   let options = names.map((e, f) => (
     <Button
-      key={f}
+      key={e}
       onClick={onSelect}
       numPerRow={numPerRow}
       onKeyDown={handleKeyDown(onKeyDown)}

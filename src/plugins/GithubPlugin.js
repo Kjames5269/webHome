@@ -1,34 +1,34 @@
+import React from "react";
 import { strToInput, onEnterHelper, plugin } from "./PluginAbstract";
+import { SearchBar } from "../SearchBar";
 
 const name = "git";
 const gitURL = "https://github.com";
 
-const getGithubJsx = (args, jsxWrapper) => {
-  return jsxWrapper(`${gitURL}/search`, [
-    strToInput("q", args.join(" ")),
-    strToInput("type", "code")
-  ]);
-};
+const githubPlugin = props => {
+  const { args, children } = props;
+  let onSubmit = undefined;
 
-const githubPlugin = (args, jsxWrapper) => {
-  let onEnter = undefined;
   switch (args[0]) {
     case "issues":
-      onEnter = onEnterHelper(`${gitURL}/issues`);
+      onSubmit = onEnterHelper(`${gitURL}/issues`);
       break;
     case "prs":
-      onEnter = onEnterHelper(`${gitURL}/pulls`);
+      onSubmit = onEnterHelper(`${gitURL}/pulls`);
       break;
   }
 
   if (args.length == 0) {
-    onEnter = onEnterHelper(`${gitURL}/`);
+    onSubmit = onEnterHelper(`${gitURL}/`);
   }
 
-  return {
-    jsx: getGithubJsx(args, jsxWrapper),
-    onEnter: onEnter
-  };
+  return (
+    <SearchBar {...props} url={`${gitURL}/search`} onSubmit={onSubmit}>
+      {children}
+      {strToInput("q", args.join(" "))}
+      {strToInput("type", "code")}
+    </SearchBar>
+  );
 };
 
 export default plugin(githubPlugin, name);

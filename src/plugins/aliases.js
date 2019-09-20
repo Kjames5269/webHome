@@ -1,4 +1,5 @@
-import { onEnterHelper, plugin } from "./PluginAbstract";
+import React from "react";
+import { onEnterHelper, plugin, DuckDuckGoPlugin } from "./PluginAbstract";
 
 const Aliases = [
   {
@@ -23,15 +24,29 @@ const Aliases = [
   { id: "facebook", url: "https://www.facebook.com" }
 ];
 
-//  Takes an elememnt from the commandList and returns a function
-//  that takes a cmd and args
-const getPlugin = aliasEle => (args, jsx) => {
-  return {
-    jsx: undefined,
-    onEnter: args.length == 0 ? onEnterHelper(aliasEle.url) : undefined
-  };
+const getAlias = name => {
+  const filtered = Aliases.filter(e => e.id === name);
+  return filtered.length == 1 ? filtered[0] : undefined;
 };
 
-const aliasPlugins = Aliases.map(e => plugin(getPlugin(e), e.id));
+const AliasPlugin = props => {
+  const { args, children, name } = props;
+
+  const alias = getAlias(name);
+  const onSubmit =
+    args.length == 0 && alias ? onEnterHelper(alias.url) : undefined;
+
+  return (
+    <DuckDuckGoPlugin
+      {...props}
+      args={[name, args.join(" ")]}
+      onSubmit={onSubmit}
+    >
+      {children}
+    </DuckDuckGoPlugin>
+  );
+};
+
+const aliasPlugins = Aliases.map(e => plugin(AliasPlugin, e.id));
 
 export default aliasPlugins;

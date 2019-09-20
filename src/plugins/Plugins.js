@@ -18,10 +18,15 @@ export default arr;
 /*
  * Plugins:
  *
- * A plugin is a function that will take two parameters
- * (args, jsxFn) => { jsx: jsxFn('url', JsxFormInput's), onEnter: fn(e)}
+ * A plugin is a component that renders a SearchBar.
+ * Three props will be passed:
+ *  args - [array.string] - parsed arguments
+ *  children [components] - children from React
+ *  name [string]         - the name of the Plugin being rendered
+ *
+ * The plugin should render a styled.form(SearchBar)
  *
  * To register a plugin:
- * export ./PluginAbstract.plugin(Plugin, 'name of plugin')
+ * export ./PluginAbstract.plugin(PluginCmp, 'name of plugin')
  * and add it to the list above.
  */

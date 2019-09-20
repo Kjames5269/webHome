@@ -1,4 +1,5 @@
 import React from "react";
+import { SearchBar } from "../SearchBar";
 
 const delimiter = " ";
 
@@ -8,19 +9,15 @@ const strToInput = (queryName, queryParam) => {
   );
 };
 
-//  Takes a url, and children to add to the form,
-//  Then takes a Form, attrs, and more children
-const jsxWrapper = (url, extraChildren) => {
-  return (FormJsx, formAttrs, children) => (
-    <FormJsx {...formAttrs} action={url}>
-      {children}
-      {extraChildren}
-    </FormJsx>
-  );
-};
+const DuckDuckGoPlugin = props => {
+  const { args, children } = props;
 
-const defaultJsxWrapper = str => {
-  return jsxWrapper("https://www.duckduckgo.com", strToInput("q", str));
+  return (
+    <SearchBar {...props} action={"https://www.duckduckgo.com"}>
+      {children}
+      {strToInput("q", args.join(" "))}
+    </SearchBar>
+  );
 };
 
 //  Takes a url and returns an onEnter Listener to redirect to that url
@@ -31,10 +28,8 @@ const onEnterHelper = url => e => {
 };
 
 //  Standardizes parsing
-//  export plugin(simplePlugin, 'name')
-//  fn: (args, jsxWrapper) =>
-//    { jsx: Jsx, onEnter: fn(e) }
-const plugin = (fn, name) => str => {
+//  export plugin(PluginComponent, 'name')
+const plugin = (PluginComponent, name) => str => {
   const cmd = str.substring(0, name.length);
   const argString = str.substring(name.length + 1); // for delimiter
 
@@ -49,14 +44,12 @@ const plugin = (fn, name) => str => {
       return { name: name };
     }
 
-    const args = argString.split(delimiter).filter(e => e != "");
-
     return {
-      ...fn(args, jsxWrapper),
-      isEq: cmd === name,
+      cmp: PluginComponent,
+      args: argString.split(delimiter).filter(e => e != ""),
       name: name
     };
   }
 };
 
-export { jsxWrapper, defaultJsxWrapper, strToInput, onEnterHelper, plugin };
+export { strToInput, onEnterHelper, plugin, DuckDuckGoPlugin };

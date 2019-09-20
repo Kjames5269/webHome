@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
-import { Prompt, SearchBar, Input, ShadowInput } from "./SearchBar";
+import { Prompt, Input, ShadowInput } from "./SearchBar";
 import { AutoCompleteOptions } from "./AutoCompleteOptions";
-import { defaultJsxWrapper } from "./plugins/PluginAbstract";
+import { DuckDuckGoPlugin } from "./plugins/PluginAbstract";
 import { List } from "immutable";
 import { KEY_TAB } from "keycode-js";
 
@@ -29,7 +29,7 @@ const findCommonStrs = (list, selector) => {
 //  Props:
 //    plugins:
 //     [
-//       (str) => { name: string, jsx: fn(FormJsx, formAttrs, children) => jsx, onEnter: fn(event), isEq: boolean }
+//       (str) => { name: string, cmp?: ReactCmp, args?: [string] }
 //     ]
 //    > See Plugins.js for adding another plugin / formatting
 const AutoCompleteForm = props => {
@@ -45,14 +45,7 @@ const AutoCompleteForm = props => {
     props.plugins.map(e => e(input)).filter(e => e != undefined)
   );
 
-  //  skip to the website or search
-  const handleSubmit = event => {
-    const match = results.filter(e => e.isEq);
-    if (match != undefined && match.size == 1 && match.get(0).onEnter) {
-      return match.get(0).onEnter(event);
-    }
-    return true;
-  };
+  const selectedPlugin = results.size == 1 ? results.get(0) : undefined;
 
   //  Text updating
   const handleChange = e => {
@@ -69,10 +62,10 @@ const AutoCompleteForm = props => {
       setTabbed(true);
 
       //  On one result set the input
-      if (results.size == 1) {
+      if (selectedPlugin) {
         //  Auto complete stops once you pass the input
-        if (results.get(0).name.length >= input.length) {
-          setInput(results.get(0).name + " ");
+        if (selectedPlugin.name.length >= input.length) {
+          setInput(selectedPlugin.name + " ");
           setTabbed(false);
         }
       }
@@ -112,8 +105,8 @@ const AutoCompleteForm = props => {
   let shadowInput = "";
 
   //  On one result show the suggested completion
-  if (results.size == 1) {
-    shadowInput = results.get(0).name.substring(input.length);
+  if (selectedPlugin) {
+    shadowInput = selectedPlugin.name.substring(input.length);
   }
 
   const options =
@@ -129,39 +122,38 @@ const AutoCompleteForm = props => {
       undefined
     );
 
-  const formInputs = [
-    <Prompt key="prompt">{props.prompt}</Prompt>,
-    <Input
-      key="searchbar"
-      id="searchbar"
-      type="text"
-      value={input}
-      autoComplete="off"
-      onChange={handleChange}
-      onKeyDown={handleTab}
-      autoFocus
-      match={results.size == 1}
-      ref={textInput}
-      length={input.length}
-    />,
-    <ShadowInput key="shadowInput" length={input.length}>
-      {shadowInput}
-    </ShadowInput>
-  ];
+  const PluginCmp =
+    selectedPlugin && selectedPlugin.cmp
+      ? selectedPlugin.cmp
+      : DuckDuckGoPlugin;
 
-  const formAttrs = {
-    onSubmit: handleSubmit,
-    onClick: () => textInput.current.focus()
-  };
-  //  jsxFunc is a function that takes a Form, attrs, and Input fields
-  const jsxFunc =
-    results.size == 1 && results.get(0).jsx
-      ? results.get(0).jsx
-      : defaultJsxWrapper(input);
+  const args =
+    selectedPlugin && selectedPlugin.args ? selectedPlugin.args : [input];
+
+  const name = selectedPlugin ? selectedPlugin.name : undefined;
 
   return (
     <div>
-      {jsxFunc(SearchBar, formAttrs, formInputs)}
+      <PluginCmp
+        onClick={() => textInput.current.focus()}
+        args={args}
+        name={name}
+      >
+        <Prompt>{props.prompt}</Prompt>
+        <Input
+          id="searchbar"
+          type="text"
+          value={input}
+          autoComplete="off"
+          onChange={handleChange}
+          onKeyDown={handleTab}
+          autoFocus
+          match={selectedPlugin}
+          ref={textInput}
+          length={input.length}
+        />
+        <ShadowInput length={input.length}>{shadowInput}</ShadowInput>
+      </PluginCmp>
       {options}
     </div>
   );
