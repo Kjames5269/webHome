@@ -4,7 +4,6 @@ import {
   useSearchable,
   onEnterHelper,
   plugin,
-  COMPLETE,
   delimiter
 } from "./PluginAbstract";
 import { SearchBar } from "../SearchBar";

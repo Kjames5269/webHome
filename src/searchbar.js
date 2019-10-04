@@ -36,12 +36,6 @@ const Input = styled.input`
   opacity: inherit;
   float: left;
   font-size: 18px;
-
-  ${props =>
-    props.match &&
-    css`
-      color: #106c8a;
-    `}
 `;
 
 const ShadowInput = styled.pre`

@@ -17,14 +17,6 @@ import { SearchBar } from "../SearchBar";
 
 const commandList = [
   {
-    name: "google",
-    url: "https://www.google.com/",
-    searchUrl: "search",
-    getChildren: args => {
-      return strToInput("q", args.join(" "));
-    }
-  },
-  {
     name: "ultimate guitar",
     url: "https://www.ultimate-guitar.com/",
     searchUrl: "search.php",
