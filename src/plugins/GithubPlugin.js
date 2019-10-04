@@ -1,13 +1,22 @@
 import React from "react";
-import { strToInput, onEnterHelper, plugin } from "./PluginAbstract";
+import {
+  strToInput,
+  useSearchable,
+  onEnterHelper,
+  plugin,
+  COMPLETE,
+  delimiter
+} from "./PluginAbstract";
 import { SearchBar } from "../SearchBar";
 
 const name = "git";
 const gitURL = "https://github.com";
 
 const githubPlugin = props => {
-  const { args, children } = props;
+  const { children } = props;
   let onSubmit = undefined;
+
+  const [args, searchable, options] = useSearchable(props, ["issues", "prs"]);
 
   switch (args[0]) {
     case "issues":
@@ -23,11 +32,15 @@ const githubPlugin = props => {
   }
 
   return (
-    <SearchBar {...props} url={`${gitURL}/search`} onSubmit={onSubmit}>
-      {children}
-      {strToInput("q", args.join(" "))}
-      {strToInput("type", "code")}
-    </SearchBar>
+    <div>
+      <SearchBar {...props} action={`${gitURL}/search`} onSubmit={onSubmit}>
+        {children}
+        {searchable}
+        {strToInput("q", args.join(delimiter))}
+        {strToInput("type", "code")}
+      </SearchBar>
+      {options}
+    </div>
   );
 };
 

@@ -1,5 +1,10 @@
 import React from "react";
-import { onEnterHelper, plugin, DuckDuckGoPlugin } from "./PluginAbstract";
+import {
+  onEnterHelper,
+  plugin,
+  DefaultSearch,
+  useSearchable
+} from "./PluginAbstract";
 
 const Aliases = [
   {
@@ -30,20 +35,23 @@ const getAlias = name => {
 };
 
 const AliasPlugin = props => {
-  const { args, children, name } = props;
+  const { children, name } = props;
+
+  const [args, searchable] = useSearchable(props);
 
   const alias = getAlias(name);
   const onSubmit =
     args.length == 0 && alias ? onEnterHelper(alias.url) : undefined;
 
   return (
-    <DuckDuckGoPlugin
+    <DefaultSearch
       {...props}
-      args={[name, args.join(" ")]}
       onSubmit={onSubmit}
+      input={`${name} ${args.join(" ")}`}
     >
       {children}
-    </DuckDuckGoPlugin>
+      {searchable}
+    </DefaultSearch>
   );
 };
 

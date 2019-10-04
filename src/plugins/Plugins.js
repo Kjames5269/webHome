@@ -4,7 +4,7 @@ import githubPlugin from "./GithubPlugin.js";
 import spotifyPlugin from "./spotifyPlugin.js";
 import { isProduction, hasDuplicates } from "../utils/Utils.js";
 
-const arr = [...getPlugins, ...getAliases, githubPlugin, spotifyPlugin];
+const arr = [spotifyPlugin, githubPlugin, ...getPlugins, ...getAliases];
 
 //  Check to see if there are duplicates if it's not in production
 if (!isProduction()) {

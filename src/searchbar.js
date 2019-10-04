@@ -15,7 +15,7 @@ const Prompt = styled.p`
 
 const SearchBar = styled.form`
   width: 100%;
-  height: 38px;
+  height: 40px;
   opacity: 0.7;
   margin-right: 0px;
   background-color: white;
@@ -25,10 +25,10 @@ const SearchBar = styled.form`
 const Input = styled.input`
   font-family: monospace, monospace;
   border: none;
-  height: inherit;
+  height: calc(100% - 2px);
   //  Padding 2, Prompt width 30
   width: ${props => props.length * 11 || 11}px;
-  max-width: calc(100% - 34px);
+  max-width: calc(100% - 34px - ${props => props.buffer * 11 || 0}px);
   &:focus {
     outline: none;
   }
@@ -37,15 +37,19 @@ const Input = styled.input`
   float: left;
   font-size: 18px;
 
-  ${props => props.match && css``}
+  ${props =>
+    props.match &&
+    css`
+      color: #106c8a;
+    `}
 `;
 
 const ShadowInput = styled.pre`
   font-family: monospace, monospace;
   border: none;
-  height: calc(100% - 10px);
+  height: calc(100% - 14px);
   //  Padding 2, Prompt width 30
-  width: calc(100% - ${props => (props.length * 11 || 11) + 34}px);
+  width: calc(${props => props.length * 11 || 11}px);
   color: rgb(30, 30, 90);
   &:focus {
     outline: none;
@@ -60,4 +64,10 @@ const ShadowInput = styled.pre`
   cursor: text;
 `;
 
-export { Prompt, SearchBar, Input, ShadowInput };
+const InputLabel = styled(ShadowInput)`
+  //  Padding 2, Prompt width 30
+  width: ${props => props.length * 11 || 11}px;
+  color: #106c8a;
+`;
+
+export { Prompt, SearchBar, Input, ShadowInput, InputLabel };

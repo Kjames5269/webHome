@@ -1,5 +1,10 @@
 import React from "react";
-import { strToInput, onEnterHelper, plugin } from "./PluginAbstract";
+import {
+  strToInput,
+  onEnterHelper,
+  plugin,
+  useSearchable
+} from "./PluginAbstract";
 import { SearchBar } from "../SearchBar";
 
 //  Adding to the plugin list
@@ -69,7 +74,9 @@ const getSimple = name => {
 };
 
 const SimplePlugin = props => {
-  const { name, args, children } = props;
+  const { name, children } = props;
+
+  const [args, searchable] = useSearchable(props);
 
   const simple = getSimple(name);
 
@@ -80,6 +87,7 @@ const SimplePlugin = props => {
   return (
     <SearchBar {...props} action={searchUrl} onSubmit={onSubmit}>
       {children}
+      {searchable}
       {simple.getChildren(args)}
     </SearchBar>
   );

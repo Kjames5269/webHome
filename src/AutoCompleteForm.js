@@ -1,29 +1,21 @@
 import React, { useState, useRef } from "react";
-import { Prompt, Input, ShadowInput } from "./SearchBar";
+import { Prompt, Input, ShadowInput, InputLabel } from "./SearchBar";
 import { AutoCompleteOptions } from "./AutoCompleteOptions";
-import { DuckDuckGoPlugin } from "./plugins/PluginAbstract";
+import {
+  delimiter,
+  COMPLETE,
+  MATCH,
+  INCOMPLETE,
+  DefaultSearch
+} from "./plugins/PluginAbstract";
 import { List } from "immutable";
-import { KEY_TAB } from "keycode-js";
+import { KEY_TAB, KEY_BACK_SPACE } from "keycode-js";
+import { findCommonStrs } from "./utils/Utils";
 
 const NUM_PER_ROW = 4;
 
-//  arr: an Array of objects / strings
-//  selector: a function to extract strings from the objects
-const findCommonStrs = (list, selector) => {
-  let firstWord = selector(list.get(0));
-  let commonString = "";
-  let charLocal;
-
-  for (let i = 0; i < firstWord.length; i++) {
-    charLocal = firstWord.charAt(i);
-    for (let j = 1; j < list.size; j++) {
-      if (charLocal != selector(list.get(j)).charAt(i)) {
-        return commonString;
-      }
-    }
-    commonString += charLocal;
-  }
-  return commonString;
+const matched = result => {
+  return result && (result.status == MATCH || result.status == COMPLETE);
 };
 
 //  Props:
@@ -35,17 +27,20 @@ const findCommonStrs = (list, selector) => {
 const AutoCompleteForm = props => {
   //  input is the text within the serach bar
   //  tabbed is true once tab has been pressed in the searchbar
-  let [input, setInput] = useState("");
-  let [tabbed, setTabbed] = useState(false);
+  const [input, setInput] = useState("");
+  const [tabbed, setTabbed] = useState(false);
 
   const textInput = useRef();
 
   //  Get all plugin results for the current input
-  const results = List(
-    props.plugins.map(e => e(input)).filter(e => e != undefined)
-  );
+  const results = props.plugins.map(e => e(input)).filter(e => e != undefined);
 
-  const selectedPlugin = results.size == 1 ? results.get(0) : undefined;
+  const pluginName = results.length == 1 ? results[0].name : undefined;
+
+  const selectedPlugin =
+    results.length == 1 && matched(results[0]) ? results[0] : undefined;
+
+  const optionsx = results.map(e => e.name);
 
   //  Text updating
   const handleChange = e => {
@@ -62,16 +57,16 @@ const AutoCompleteForm = props => {
       setTabbed(true);
 
       //  On one result set the input
-      if (selectedPlugin) {
+      if (optionsx.length == 1) {
         //  Auto complete stops once you pass the input
-        if (selectedPlugin.name.length >= input.length) {
-          setInput(selectedPlugin.name + " ");
+        if (optionsx[0].length >= input.length) {
+          setInput(optionsx[0] + delimiter);
           setTabbed(false);
         }
       }
-      //  on multiple results find a common string and set the input
-      else if (results.size > 1) {
-        const commonStr = findCommonStrs(results, e => e.name);
+      //  on multiple options find a common string and set the input
+      else if (optionsx.length > 1) {
+        const commonStr = findCommonStrs(optionsx, e => e);
         setInput(commonStr);
       }
       return;
@@ -86,7 +81,7 @@ const AutoCompleteForm = props => {
   const handleAutoComplete = e => {
     e.preventDefault();
 
-    setInput(e.target.textContent + " ");
+    setInput(e.target.textContent + delimiter);
     setTabbed(false);
 
     textInput.current.focus();
@@ -105,14 +100,14 @@ const AutoCompleteForm = props => {
   let shadowInput = "";
 
   //  On one result show the suggested completion
-  if (selectedPlugin) {
-    shadowInput = selectedPlugin.name.substring(input.length);
+  if (optionsx.length == 1) {
+    shadowInput = optionsx[0].substring(input.length);
   }
 
   const options =
-    tabbed && results.size > 1 ? (
+    tabbed && optionsx.length > 1 ? (
       <AutoCompleteOptions
-        names={results.map(e => e.name)}
+        names={optionsx}
         onSelect={handleAutoComplete}
         onKeyDown={onOptionKeyDown}
         numPerRow={NUM_PER_ROW}
@@ -122,41 +117,72 @@ const AutoCompleteForm = props => {
       undefined
     );
 
-  const PluginCmp =
-    selectedPlugin && selectedPlugin.cmp
-      ? selectedPlugin.cmp
-      : DuckDuckGoPlugin;
+  const selectedStatus = selectedPlugin ? selectedPlugin.status : INCOMPLETE;
 
-  const args =
-    selectedPlugin && selectedPlugin.args ? selectedPlugin.args : [input];
+  //  Check to see if the key is a backspace.
+  const onPluginKeyDown = (fn, isEmpty) => e => {
+    if (e.keyCode == KEY_BACK_SPACE && isEmpty) {
+      setInput(input.substring(0, input.length - 1));
+      e.preventDefault();
+    }
+    return fn(e);
+  };
 
-  const name = selectedPlugin ? selectedPlugin.name : undefined;
-
-  return (
-    <div>
-      <PluginCmp
-        onClick={() => textInput.current.focus()}
-        args={args}
-        name={name}
-      >
-        <Prompt>{props.prompt}</Prompt>
-        <Input
-          id="searchbar"
-          type="text"
-          value={input}
-          autoComplete="off"
-          onChange={handleChange}
-          onKeyDown={handleTab}
-          autoFocus
-          match={selectedPlugin}
-          ref={textInput}
-          length={input.length}
-        />
-        <ShadowInput length={input.length}>{shadowInput}</ShadowInput>
-      </PluginCmp>
-      {options}
-    </div>
+  const inputField = (
+    <Input
+      id="searchbar"
+      key="searchbar"
+      type="text"
+      value={input}
+      autoComplete="off"
+      onChange={handleChange}
+      onKeyDown={handleTab}
+      autoFocus
+      match={selectedPlugin}
+      length={input.length}
+      ref={textInput}
+    />
   );
+
+  const inputLabel = (
+    <InputLabel key="inputLabel" length={input.length}>
+      {input}
+    </InputLabel>
+  );
+
+  const inputCmp = selectedStatus == COMPLETE ? inputLabel : inputField;
+
+  const PluginCmp = matched(selectedPlugin) ? selectedPlugin.cmp : undefined;
+
+  if (PluginCmp) {
+    return (
+      <div>
+        <PluginCmp
+          onClick={() => textInput.current.focus()}
+          name={pluginName}
+          textRef={textInput}
+          status={selectedStatus}
+          onKeyDown={onPluginKeyDown}
+        >
+          <Prompt>{props.prompt}</Prompt>
+          {inputCmp}
+        </PluginCmp>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <DefaultSearch onClick={() => textInput.current.focus()} input={input}>
+          <Prompt>{props.prompt}</Prompt>
+          {inputField}
+          <ShadowInput key="shadowInput" length={shadowInput.length}>
+            {shadowInput}
+          </ShadowInput>
+        </DefaultSearch>
+        {options}
+      </div>
+    );
+  }
 };
 
 export default AutoCompleteForm;

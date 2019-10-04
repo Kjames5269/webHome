@@ -1,13 +1,15 @@
 import React from "react";
-import { onEnterHelper, plugin } from "./PluginAbstract";
+import { onEnterHelper, plugin, useSearchable } from "./PluginAbstract";
 import { SearchBar } from "../SearchBar.js";
 
 const name = "spotify";
 const spotifyURL = "https://open.spotify.com";
 
 const SpotifyPlugin = props => {
-  const { args, children } = props;
+  const { children } = props;
   let onSubmit = undefined;
+
+  const [args, searchable] = useSearchable(props);
 
   if (args.length == 0) {
     onSubmit = onEnterHelper(`${spotifyURL}/`);
@@ -18,6 +20,7 @@ const SpotifyPlugin = props => {
   return (
     <SearchBar {...props} onSubmit={onSubmit}>
       {children}
+      {searchable}
     </SearchBar>
   );
 };

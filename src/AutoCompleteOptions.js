@@ -13,7 +13,7 @@ import {
 } from "keycode-js";
 
 //  props:
-//  onClick, onKeyDown, numPerRow, names
+//  onClick, onKeyDown, numPerRow, onRollover, names
 const AutoCompleteOptions = props => {
   const [currentVal, setCurrentVal] = useState(0);
   const { names, onKeyDown, numPerRow, onRollover, onSelect } = props;
@@ -22,14 +22,14 @@ const AutoCompleteOptions = props => {
 
   const navLeft = num => {
     const currVal = currentVal;
-    const newVal = (currentVal - num + names.size) % names.size;
+    const newVal = (currentVal - num + names.length) % names.length;
     setCurrentVal(newVal);
     return newVal >= currVal;
   };
 
   const navRight = num => {
     const currVal = currentVal;
-    const newVal = (currentVal + num) % names.size;
+    const newVal = (currentVal + num) % names.length;
     setCurrentVal(newVal);
     return newVal <= currVal;
   };
