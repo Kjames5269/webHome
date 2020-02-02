@@ -26,7 +26,7 @@ const argMap = [
     }
 ]
 
-const googlePlugin = props => {
+const GooglePlugin = props => {
   const { children } = props;
   let onSubmit = undefined;
 
@@ -53,4 +53,4 @@ const googlePlugin = props => {
   );
 };
 
-export default plugin(googlePlugin, name);
+export default plugin(GooglePlugin, name);

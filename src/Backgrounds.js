@@ -10,6 +10,7 @@ import YourName02 from "../resources/YourName02.jpg";
 import snowing from "../resources/snowing.png";
 import yuruCamp from "../resources/YuruCamp.png";
 import nightPort from "../resources/nightPort.jpg";
+import MadeInAbyss4 from "../resources/MadeInAbyss4thLayer.jpg";
 
 const bgContextList = {
   //  primary: This should be used as the main color
@@ -47,7 +48,13 @@ const bgContextList = {
     secondary: [200, 198, 0],
     tertiary: [0, 195, 188],
     quaternary: [50, 60, 0]
-  }
+  },
+  green: {
+    primary: [12, 130, 80],
+    secondary: [0, 140, 150],
+    tertiary: [30, 230, 180],
+    quaternary: [30, 150, 170]
+  },
 };
 
 const backgrounds = [
@@ -106,10 +113,17 @@ const backgrounds = [
     url:
       "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=74324801",
     colors: bgContextList.purple
+  },
+  {
+    src: MadeInAbyss4,
+    sauce: "Made in Abyss",
+    url: "https://www.deviantart.com/erikshoemaker/art/Goblet-of-Giants-724326305",
+    colors: bgContextList.green
   }
 ];
 
 function getPos() {
+  return backgrounds.length-1;
   return Math.floor(Math.random() * backgrounds.length);
 }
 

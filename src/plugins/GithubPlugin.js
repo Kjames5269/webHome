@@ -11,7 +11,7 @@ import { SearchBar } from "../SearchBar";
 const name = "git";
 const gitURL = "https://github.com";
 
-const githubPlugin = props => {
+const GithubPlugin = props => {
   const { children } = props;
   let onSubmit = undefined;
 
@@ -43,4 +43,4 @@ const githubPlugin = props => {
   );
 };
 
-export default plugin(githubPlugin, name);
+export default plugin(GithubPlugin, name);
