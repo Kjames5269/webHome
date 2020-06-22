@@ -8,7 +8,7 @@ import {
   INCOMPLETE,
   DefaultSearch
 } from "./plugins/PluginAbstract";
-import { List } from "immutable";
+import { List, setIn } from "immutable";
 import { KEY_TAB, KEY_BACK_SPACE } from "keycode-js";
 import { findCommonStrs } from "./utils/Utils";
 
@@ -123,6 +123,10 @@ const AutoCompleteForm = props => {
   const onPluginKeyDown = (fn, isEmpty) => e => {
     if (e.keyCode == KEY_BACK_SPACE && isEmpty) {
       setInput(input.substring(0, input.length - 1));
+      e.preventDefault();
+    }
+    if (e.keyCode == KEY_BACK_SPACE && e.ctrlKey) {
+      setInput("");
       e.preventDefault();
     }
     return fn(e);
