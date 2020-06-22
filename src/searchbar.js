@@ -55,7 +55,7 @@ const ShadowInput = styled.pre`
   float: left;
   font-size: 18px;
   display: inline-block;
-  padding: 10px 1px 2px 1px;
+  padding: 10px 0 2px 0;
   margin: 0px;
   cursor: text;
 `;
