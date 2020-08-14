@@ -6,7 +6,7 @@ const Aliases = [
     url:
       "https://i2.kym-cdn.com/entries/icons/original/000/015/559/It_Was_Me__Dio!.jpg"
   },
-  { id: "animemes", url: "https://www.reddit.com/r/Animemes/" },
+  { id: "good animemes", url: "https://www.reddit.com/r/goodanimemes/" },
   { id: "anime", url: "https://horriblesubs.info/" },
   { id: "/w", url: "https://boards.4channel.org/w/catalog" },
   { id: "/a", url: "https://boards.4channel.org/a/catalog" },
@@ -20,7 +20,12 @@ const Aliases = [
   { id: "gmail", url: "https://mail.google.com/mail/u/0/" },
   { id: "localhost:8080", url: "http://localhost:8080" },
   { id: "linkedln", url: "https://www.linkedin.com/" },
-  { id: "facebook", url: "https://www.facebook.com" }
+  { id: "facebook", url: "https://www.facebook.com" },
+  { id: "messenger", url: "https://www.messenger.com/" },
+  { id: "hey", url: "https://app.hey.com/" },
+  { id: "us bank", url: "https://www.usbank.com/index.html" },
+  { id: "twitter", url: "https://twitter.com/" },
+
 ];
 
 //  Takes an elememnt from the commandList and returns a function

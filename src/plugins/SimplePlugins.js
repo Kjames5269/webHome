@@ -54,6 +54,30 @@ const commandList = [
     doEval: (url, args, jsxWrapper) => {
       return jsxWrapper(`${url}search`, strToInput("q", args.join(" ")));
     }
+  }, {
+    name: "blue bottle coffee",
+    url: "https://bluebottlecoffee.com/",
+    doEval: (url, args, jsxWrapper) => {
+      return jsxWrapper(`${url}store`, strToInput("query", args.join(" ")));
+    }
+  }, {
+    name: "rei",
+    url: "https://www.rei.com/",
+    doEval: (url, args, jsxWrapper) => {
+      return jsxWrapper(`${url}search`, strToInput("q", args.join(" ")));
+    }
+  }, {
+    name: "total wine",
+    url: "https://www.totalwine.com/",
+    doEval: (url, args, jsxWrapper) => {
+      return jsxWrapper(`${url}search/all`, strToInput("text", args.join(" ")));
+    }
+  }, {
+    name: "anilist",
+    url: "https://anilist.co/",
+    doEval: (url, args, jsxWrapper) => {
+      return jsxWrapper(`${url}search/anime`, strToInput("search", args.join(" ")));
+    }
   }
 ];
 
