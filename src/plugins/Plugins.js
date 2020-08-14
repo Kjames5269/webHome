@@ -1,8 +1,8 @@
 import getPlugins from "./SimplePlugins.js";
 import getAliases from "./Aliases.js";
 import githubPlugin from "./GithubPlugin.js";
-import spotifyPlugin from "./spotifyPlugin.js";
-import zillowPlugin from "./zillowPlugin.js";
+import spotifyPlugin from "./SpotifyPlugin.js";
+import zillowPlugin from "./ZillowPlugin.js";
 import { isProduction, hasDuplicates } from "../utils/Utils.js";
 
 const arr = [
