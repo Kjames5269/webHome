@@ -10,6 +10,12 @@ import YourName02 from "../resources/YourName02.jpg";
 import snowing from "../resources/snowing.png";
 import yuruCamp from "../resources/YuruCamp.png";
 import nightPort from "../resources/nightPort.jpg";
+import MadeInAbyss4 from "../resources/MadeInAbyss4thLayer.jpg";
+import HexOfStarrySky from "../resources/HexOfStarrySky.jpg";
+import Ghibli from "../resources/Ghibli.jpg";
+import WayBack from "../resources/wayback.jpg";
+import quietNight from "../resources/quietNight.jpg";
+import noTitle from "../resources/no title.jpg";
 
 const bgContextList = {
   //  primary: This should be used as the main color
@@ -20,33 +26,39 @@ const bgContextList = {
 
   blue: {
     primary: [40, 20, 75],
-    secondary: [65, 65, 200],
+    secondary: [130, 130, 255],
     tertiary: [255, 165, 0],
     quaternary: [30, 101, 200]
   },
   red: {
     primary: [135, 70, 10],
-    secondary: [180, 80, 125],
+    secondary: [255, 160, 255],
     tertiary: [80, 170, 200],
     quaternary: [200, 101, 30]
   },
   white: {
     primary: [40, 40, 50],
-    secondary: [60, 70, 60],
+    secondary: [180, 200, 180],
     tertiary: [255, 255, 255],
     quaternary: [60, 75, 60]
   },
   purple: {
     primary: [100, 0, 90],
-    secondary: [100, 80, 200],
+    secondary: [200, 160, 255],
     tertiary: [20, 185, 165],
     quaternary: [10, 155, 130]
   },
   yellow: {
-    primary: [40, 40, 0],
-    secondary: [200, 198, 0],
-    tertiary: [0, 195, 188],
-    quaternary: [50, 60, 0]
+    primary: [230, 100, 0],
+    secondary: [255, 224, 0],
+    tertiary: [255, 125, 0],
+    quaternary: [255, 140, 0]
+  },
+  green: {
+    primary: [0, 80, 80],
+    secondary: [0, 255, 160],
+    tertiary: [30, 230, 180],
+    quaternary: [30, 150, 170]
   }
 };
 
@@ -106,6 +118,43 @@ const backgrounds = [
     url:
       "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=74324801",
     colors: bgContextList.purple
+  },
+  {
+    src: MadeInAbyss4,
+    sauce: "Made in Abyss",
+    url:
+      "https://www.deviantart.com/erikshoemaker/art/Goblet-of-Giants-724326305",
+    colors: bgContextList.green
+  },
+  {
+    src: HexOfStarrySky,
+    sauce: "星空の16進数",
+    url: "https://www.pixiv.net/en/artworks/69460730",
+    colors: bgContextList.white
+  },
+  {
+    src: Ghibli,
+    sauce: "ジブリ飲み",
+    url: "https://www.pixiv.net/en/artworks/24375241",
+    colors: bgContextList.yellow
+  },
+  {
+    src: WayBack,
+    sauce: "Way Back",
+    url: "https://www.pixiv.net/en/artworks/72567454",
+    colors: bgContextList.red
+  },
+  {
+    src: quietNight,
+    sauce: "静かな夜",
+    url: "https://www.pixiv.net/en/artworks/80062865",
+    colors: bgContextList.green
+  },
+  {
+    src: noTitle,
+    sauce: "No Title",
+    url: "https://www.pixiv.net/en/artworks/76668374",
+    colors: bgContextList.white
   }
 ];
 
