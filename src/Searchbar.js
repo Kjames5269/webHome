@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 const Prompt = styled.p`
   width: 1.5vw;
-  padding: 1vh 0.5vw 1vh 1.5vw;
+  padding: 1vh 0 1vh 1.2vw;
   display: inline-block;
   margin: 0px;
   background-color: inherit;

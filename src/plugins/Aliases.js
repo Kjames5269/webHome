@@ -24,8 +24,7 @@ const Aliases = [
   { id: "messenger", url: "https://www.messenger.com/" },
   { id: "hey", url: "https://app.hey.com/" },
   { id: "us bank", url: "https://www.usbank.com/index.html" },
-  { id: "twitter", url: "https://twitter.com/" },
-
+  { id: "twitter", url: "https://twitter.com/" }
 ];
 
 //  Takes an elememnt from the commandList and returns a function

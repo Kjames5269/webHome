@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
-import { Prompt, SearchBar, Input, ShadowInput } from "./SearchBar";
-import { AutoCompleteOptions } from "./AutoCompleteOptions";
-import { defaultJsxWrapper } from "./plugins/PluginAbstract";
+import { Prompt, SearchBar, Input, ShadowInput } from "./Searchbar.js";
+import { AutoCompleteOptions } from "./AutoCompleteOptions.js";
+import { defaultJsxWrapper } from "./plugins/PluginAbstract.js";
 import { List } from "immutable";
 import { KEY_TAB } from "keycode-js";
 
