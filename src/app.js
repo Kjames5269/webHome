@@ -68,9 +68,9 @@ const BottomDiv = styled.div`
 const logos = [
   { href: "https://www.github.com", img: GithubLogo, alt: "github" },
   {
-    href: "https://www.reddit.com/r/Animemes/",
+    href: "https://www.reddit.com/r/GoodAnimemes/",
     img: AnimemesLogo,
-    alt: "Animemes"
+    alt: "Good Animemes"
   }
 ];
 
