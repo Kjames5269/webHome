@@ -13,20 +13,12 @@ const Button = styled.button`
     props.quaternary &&
     css`
       transition: background-image 0.5s, background-color 0.5s;
-      background-color: rgba(${props.primary.join(",")}, 0.4);
+      background-color: rgba(${props.primary.join(",")}, 0.5);
       background-image: linear-gradient(
         to bottom,
+        rgba(${props.secondary.join(",")}, 0.2),
         rgba(${props.secondary.join(",")}, 0.5),
-        rgba(
-          ${props.secondary
-            .map(e => {
-              let newVal = e * 2.5;
-              return newVal >= 255 ? 255 : newVal;
-            })
-            .join(",")},
-          0.5
-        ),
-        rgba(${props.secondary.join(",")}, 0.5)
+        rgba(${props.secondary.join(",")}, 0.2)
       );
 
       :focus,
@@ -49,6 +41,7 @@ const Button = styled.button`
   border-radius: inherit;
 
   color: rgba(255, 255, 255, 0.85);
+  text-shadow: -1px 0 rgba(40, 40, 40, 0.8), 0 1px rgba(40, 40, 40, 0.8);
   font-size: 18px;
 
   white-space: nowrap;
