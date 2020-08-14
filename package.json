@@ -10,7 +10,8 @@
     "start": "webpack-dev-server --open --mode development --env.NODE_ENV=local",
     "format": "prettier src/*.js --write && prettier src/**/*.js --write",
     "eslint": "eslint src/*.js; eslint src/**/*.js",
-    "prod": "webpack --env prod && ls -l && sed -i '' 's/script/script charset=\"UTF-8\"/' target/index.html",
+    "prod": "webpack --env prod && sed -i 's/script/script charset=\"UTF-8\"/' target/index.html",
+    "macProd": "webpack --env prod && sed -i '' 's/script/script charset=\"UTF-8\"/' target/index.html",
     "deploy": "gh-pages -d target"
   },
   "dependencies": {
