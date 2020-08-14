@@ -5,7 +5,13 @@ import spotifyPlugin from "./spotifyPlugin.js";
 import zillowPlugin from "./zillowPlugin.js";
 import { isProduction, hasDuplicates } from "../utils/Utils.js";
 
-const arr = [...getPlugins, ...getAliases, githubPlugin, spotifyPlugin, zillowPlugin];
+const arr = [
+  ...getPlugins,
+  ...getAliases,
+  githubPlugin,
+  spotifyPlugin,
+  zillowPlugin
+];
 
 //  Check to see if there are duplicates if it's not in production
 if (!isProduction()) {
