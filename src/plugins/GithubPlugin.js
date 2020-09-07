@@ -1,6 +1,6 @@
 import { strToInput, onEnterHelper, plugin } from "./PluginAbstract";
 
-const name = "git";
+const name = "github";
 const gitURL = "https://github.com";
 
 const getGithubJsx = (args, jsxWrapper) => {

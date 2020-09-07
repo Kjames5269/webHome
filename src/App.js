@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 
 import Clock from "react-live-clock";
 import GithubLogo from "../resources/GitHub-Mark-120px-plus.png";
-import AnimemesLogo from "../resources/Animemes.png";
+import GoodAnimemesLogo from "../resources/GoodAnimemesMascot.png";
 import water from "../resources/water.jpg";
 
 import Banner from "./Banner.js";
@@ -69,7 +69,7 @@ const logos = [
   { href: "https://www.github.com", img: GithubLogo, alt: "github" },
   {
     href: "https://www.reddit.com/r/GoodAnimemes/",
-    img: AnimemesLogo,
+    img: GoodAnimemesLogo,
     alt: "Good Animemes"
   }
 ];
