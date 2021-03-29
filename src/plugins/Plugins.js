@@ -10,7 +10,7 @@ const arr = [
   ...getAliases,
   githubPlugin,
   spotifyPlugin,
-  zillowPlugin
+  zillowPlugin,
 ];
 
 //  Check to see if there are duplicates if it's not in production

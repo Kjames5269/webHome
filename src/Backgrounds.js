@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import TheArcticCruise from "../resources/TheArcticCruise.png";
 import AlpineSkyline from "../resources/AlpineSkyline.png";
 import TheBigParade from "../resources/TheBigParade.png";
-import Va11halla from "../resources/Va11halla.png";
+import Va11halla01 from "../resources/Va11halla.png";
 import YourName01 from "../resources/YourName01.jpg";
 import YourName02 from "../resources/YourName02.jpg";
 import snowing from "../resources/snowing.png";
@@ -16,6 +16,7 @@ import Ghibli from "../resources/Ghibli.jpg";
 import WayBack from "../resources/wayback.jpg";
 import quietNight from "../resources/quietNight.jpg";
 import noTitle from "../resources/no title.jpg";
+import Va11halla02 from "../resources/Va11halla02.png";
 
 const bgContextList = {
   //  primary: This should be used as the main color
@@ -59,6 +60,12 @@ const bgContextList = {
     secondary: [0, 255, 160],
     tertiary: [30, 230, 180],
     quaternary: [30, 150, 170]
+  },
+  black: {
+    primary: [25, 25, 25],
+    secondary: [25, 25, 25],
+    tertiary: [220, 235, 220],
+    quaternary: [55, 55, 55]
   }
 };
 
@@ -82,7 +89,7 @@ const backgrounds = [
     colors: bgContextList.blue
   },
   {
-    src: Va11halla,
+    src: Va11halla01,
     sauce: "VA-11 HALL-A",
     url: "https://www.deviantart.com/ex-trident/art/Va-11-Hall-A-702530927",
     colors: bgContextList.blue
@@ -155,6 +162,12 @@ const backgrounds = [
     sauce: "No Title",
     url: "https://www.pixiv.net/en/artworks/76668374",
     colors: bgContextList.white
+  },
+  {
+    src: Va11halla02,
+    sauce: "VA-11 HALL-A",
+    url: "https://twitter.com/lanxcer/status/1332376282907037696?s=20",
+    colors: bgContextList.black
   }
 ];
 
